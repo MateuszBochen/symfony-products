@@ -1,0 +1,20 @@
+services:
+  repository.product:
+    class: AppBundle\Repository\ProductRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:Product]
+
+  repository.category:
+    class: AppBundle\Repository\CategoryRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:Category]
+
+  manager.product:
+    class: AppBundle\Manager\ProductManager
+    share: false
+    arguments: ['@repository.product', '@validator']
+
+  manager.category:
+    class: AppBundle\Manager\CategoryManager
+    share: false
+    arguments: ['@repository.category', '@validator']

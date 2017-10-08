@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Productlanguage</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ productLanguage.id }}</td>
+            </tr>
+            <tr>
+                <th>Langcode</th>
+                <td>{{ productLanguage.langCode }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ productLanguage.name }}</td>
+            </tr>
+            <tr>
+                <th>Subname</th>
+                <td>{{ productLanguage.subName }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ productLanguage.description }}</td>
+            </tr>
+            <tr>
+                <th>Fulldescription</th>
+                <td>{{ productLanguage.fullDescription }}</td>
+            </tr>
+            <tr>
+                <th>Metatitle</th>
+                <td>{{ productLanguage.metaTitle }}</td>
+            </tr>
+            <tr>
+                <th>Metadescription</th>
+                <td>{{ productLanguage.metaDescription }}</td>
+            </tr>
+            <tr>
+                <th>Metakeywords</th>
+                <td>{{ productLanguage.metaKeywords }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('productlanguage_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

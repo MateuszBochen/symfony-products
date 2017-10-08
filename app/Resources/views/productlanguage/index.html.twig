@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Productlanguages list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Langcode</th>
+                <th>Name</th>
+                <th>Subname</th>
+                <th>Description</th>
+                <th>Fulldescription</th>
+                <th>Metatitle</th>
+                <th>Metadescription</th>
+                <th>Metakeywords</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for productLanguage in productLanguages %}
+            <tr>
+                <td><a href="{{ path('productlanguage_show', { 'id': productLanguage.id }) }}">{{ productLanguage.id }}</a></td>
+                <td>{{ productLanguage.langCode }}</td>
+                <td>{{ productLanguage.name }}</td>
+                <td>{{ productLanguage.subName }}</td>
+                <td>{{ productLanguage.description }}</td>
+                <td>{{ productLanguage.fullDescription }}</td>
+                <td>{{ productLanguage.metaTitle }}</td>
+                <td>{{ productLanguage.metaDescription }}</td>
+                <td>{{ productLanguage.metaKeywords }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('productlanguage_show', { 'id': productLanguage.id }) }}">show</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
