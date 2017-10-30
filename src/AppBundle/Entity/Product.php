@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -28,87 +29,132 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="sku", type="string", length=100)
+     * @ORM\Column(name="sku", type="string", length=100, unique=true)
      * @Assert\NotBlank()
+     * @AppAssert\UniqueSKU()
      */
     private $sku;
 
     /**
+     * CODE EAN / EAN-13 = ISBN
      * @var string
      *
-     * @ORM\Column(name="width", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="ean", type="string", length=13, unique=true, nullable=true)
+     */
+    private $ean;
+
+    /**
+     * Global Trade Item Number
+     * @var string
+     *
+     * @ORM\Column(name="gtin", type="string", length=14, unique=true, nullable=true)
+     */
+    private $gtin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="width", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $width;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="height", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="height", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $height;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="length", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="length", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $length;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="weight", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="diameter", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $diameter;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="weight", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $weight;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="dimensionUnit", type="string", length=10)
+     * @ORM\Column(name="dimensionUnit", type="string", length=10, nullable=true)
      */
     private $dimensionUnit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="weightUnit", type="string", length=10)
+     * @ORM\Column(name="weightUnit", type="string", length=10, nullable=true)
      */
     private $weightUnit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor", type="string", length=255)
+     * @ORM\Column(name="vendor", type="string", length=255, nullable=true)
      */
     private $vendor = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="brand", type="string", length=255)
+     * @ORM\Column(name="brand", type="string", length=255, nullable=true)
      */
     private $brand = '';
 
     /**
+     * @var string
+     * ISO 639-1:2002, Codes for the representation of names of languages
+     *
+     * @ORM\Column(name="country_of_production", type="string", length=3, nullable=true)
+     */
+    private $countryOfProduction = '';
+
+    /**
+     * @JMS\Exclude()
      * @ORM\OneToMany(targetEntity="ProductLanguage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
      */
     private $languages;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ProductProperties", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $properties;
+    private $alllanguages;
+    private $language;
 
     /**
-     * Many Groups have Many Users.
+     * @JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="ProductImage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $images;
+
+    /**
+     * @JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="ProductProperty", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $properties;
+    private $property;
+    private $allProperties;
+
+    /**
+     * @JMS\Exclude()
      * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
      */
     private $categories;
 
-
     public function __construct()
     {
         $this->languages = new ArrayCollection();
+        $this->images = new ArrayCollection();
         $this->properties = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
@@ -121,20 +167,6 @@ class Product
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set categories
-     *
-     * @param string $categories
-     *
-     * @return Product
-     */
-    public function setCategories($categories)
-    {
-        $this->categories = $categories;
-
-        return $this;
     }
 
     /**
@@ -169,6 +201,54 @@ class Product
     public function getSku()
     {
         return $this->sku;
+    }
+
+    /**
+     * Set EAN
+     *
+     * @param string $ean
+     *
+     * @return ProductVariant
+     */
+    public function setEan($ean)
+    {
+        $this->ean = $ean;
+
+        return $this;
+    }
+
+    /**
+     * Get EAN
+     *
+     * @return string
+     */
+    public function getEan()
+    {
+        return $this->ean;
+    }
+
+    /**
+     * Set GTIN
+     *
+     * @param string $gtin
+     *
+     * @return ProductVariant
+     */
+    public function setGtin($gtin)
+    {
+        $this->gtin = $gtin;
+
+        return $this;
+    }
+
+    /**
+     * Get EAN
+     *
+     * @return string
+     */
+    public function getGtin()
+    {
+        return $this->gtin;
     }
 
     /**
@@ -224,7 +304,7 @@ class Product
      *
      * @param string $length
      *
-     * @return ProductVariant
+     * @return Product
      */
     public function setLength($length)
     {
@@ -241,6 +321,30 @@ class Product
     public function getLength()
     {
         return $this->length;
+    }
+
+    /**
+     * Set diameter
+     *
+     * @param string $diameter
+     *
+     * @return Product
+     */
+    public function setDiameter($diameter)
+    {
+        $this->diameter = $diameter;
+
+        return $this;
+    }
+
+    /**
+     * Get diameter
+     *
+     * @return string
+     */
+    public function getDiameter()
+    {
+        return $this->diameter;
     }
 
     /**
@@ -315,6 +419,56 @@ class Product
         return $this->weightUnit;
     }
 
+    public function setVendor($vendor)
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    public function getVendor()
+    {
+        return $this->vendor;
+    }
+
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    public function setCountryOfProduction($countryOfProduction)
+    {
+        $this->countryOfProduction = $countryOfProduction;
+
+        return $this;
+    }
+
+    public function getCountryOfProduction()
+    {
+        return $this->countryOfProduction;
+    }
+
+    /**
+     * Add image
+     *
+     * @param ProductImage $image
+     * @return Product
+     */
+    public function addImage(ProductImage $image)
+    {
+        $image->setProduct($this);
+        $this->images->add($image);
+
+        return $this;
+    }
+
     /**
      * Add language
      *
@@ -322,7 +476,7 @@ class Product
      * @return Product
      */
     public function addLanguage(ProductLanguage $productLanguage)
-    {   
+    {
         $productLanguage->setProduct($this);
         $this->languages->add($productLanguage);
 
@@ -344,27 +498,51 @@ class Product
         return $this->languages;
     }
 
-    public function getLanguage(string $code):ProductLanguage
+    public function getAlllanguages()
+    {
+        $this->alllanguages = $this->languages;
+        return $this->alllanguages;
+    }
+
+    public function getLanguage(string $code)
     {
         $criteria = Criteria::create();
-        
         $criteria->where(Criteria::expr()->eq('langCode', $code));
-        
-        $langages = $this->languages->matching($criteria);
-
-        if(isset($langages[0])) {
-            return $langages[0];
+        $this->language = $this->languages->matching($criteria);
+        if (isset($this->language[0])) {
+            $this->language = $this->language[0];
+            return $this->language;
         }
+    }
+
+    public function getPropertyById(int $id)
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('id', $id));
+        $this->property = $this->properties->matching($criteria);
+        if (isset($this->property[0])) {
+            $this->property = $this->property[0];
+            return $this->property;
+        }
+    }
+
+    public function getProperty(string $code): array
+    {
+        $criteria = Criteria::create();
+
+        $criteria->where(Criteria::expr()->eq('langCode', $code));
+
+        return $this->properties->matching($criteria);
     }
 
     /**
      * Add property
      *
-     * @param ProductProperties $productProperty
+     * @param ProductProperty $productProperty
      * @return Product
      */
-    public function addProperty(ProductProperties $productProperty)
-    {   
+    public function addProperty(ProductProperty $productProperty)
+    {
         $productProperty->setProduct($this);
         $this->properties->add($productProperty);
 
@@ -374,25 +552,22 @@ class Product
     /**
      * Remove property
      *
-     * @param ProductProperties $removeProperty
+     * @param ProductProperty $removeProperty
      */
-    public function removeProperty(ProductProperties $productProperty)
+    public function removeProperty(ProductProperty $productProperty)
     {
         $this->properties->removeElement($productProperty);
     }
 
-    public function getProperties():array
+    public function getProperties(): array
     {
         return $this->properties;
     }
 
-    public function getProperty(string $code):array
+    public function getAllProperties()
     {
-        $criteria = Criteria::create();
-
-        $criteria->where(Criteria::expr()->eq('langCode', $code));
-
-        return $this->properties->matching($criteria);
+        $this->allProperties = $this->properties;
+        return $this->allProperties = $this->allProperties;
     }
 
     /**
@@ -405,6 +580,13 @@ class Product
     {
         $category->addProduct($this);
         $this->categories->add($category);
+
+        return $this;
+    }
+
+    public function setCategories($categories)
+    {
+        //$this->categories = $categories;
 
         return $this;
     }

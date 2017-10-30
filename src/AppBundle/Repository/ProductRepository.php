@@ -28,6 +28,16 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('countryCode', $countryCode)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByCountryCode(string $countryCode)
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.languages', 'pl')
+            ->andWhere('pl.langCode = :countryCode')
+            ->setParameter('countryCode', $countryCode)
+            ->getQuery()
+            ->getResult();
     }*/
 
     public function update(Product $product)

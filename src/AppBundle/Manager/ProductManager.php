@@ -2,22 +2,34 @@
 
 namespace AppBundle\Manager;
 
-use AppBundle\Repository\ProductRepository;
-use AppBundle\Entity\Product;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\ProductLanguage;
+use AppBundle\Entity\ProductProperty;
+use AppBundle\Entity\ProductPropertyValue;
+use AppBundle\Repository\ProductPropertyRepository;
+use AppBundle\Repository\ProductPropertyValueRepository;
+use AppBundle\Repository\ProductRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductManager extends BaseManager
 {
+    private $productPropertyValueRepository;
+    private $productPropertyRepository;
 
-    public function __construct(ProductRepository $productRepository, ValidatorInterface $validator)
-    {
+    public function __construct(
+        ProductRepository $productRepository,
+        ValidatorInterface $validator,
+        ProductPropertyRepository $productPropertyRepository,
+        ProductPropertyValueRepository $productPropertyValueRepository
+    ) {
         $this->repository = $productRepository;
         $this->validator = $validator;
+        $this->productPropertyValueRepository = $productPropertyValueRepository;
+        $this->productPropertyRepository = $productPropertyRepository;
     }
 
-    public function getNewProduct():Product
+    public function getNewProduct(): Product
     {
         $this->currentEntity = new Product();
         $this->setDefaultValues();
@@ -25,7 +37,7 @@ class ProductManager extends BaseManager
         return $this->currentEntity;
     }
 
-    public function findOneBy(array $conditions):Product
+    public function findOneBy(array $conditions): Product
     {
         $this->currentEntity = $this->repository->findOneBy($conditions);
 
@@ -48,7 +60,7 @@ class ProductManager extends BaseManager
         $this->currentEntity->removeLanguage($productLanguage);
     }
 
-    public function addProperty(ProductProperties $property)
+    public function addProperty(ProductProperty $property)
     {
         $errors = $this->validator->validate($property);
 
@@ -59,10 +71,27 @@ class ProductManager extends BaseManager
         $this->currentEntity->addProperty($property);
     }
 
-    public function removeProperty(ProductProperties $property)
+    public function removeProperty(ProductProperty $property)
     {
         $this->currentEntity->removeProperty($property);
     }
+
+    public function removePropertyValue(int $propertyValueId)
+    {
+        $this->productPropertyValueRepository->deleteById($propertyValueId);
+    }
+
+    public function addPropertyValue(ProductPropertyValue $productPropertyValue, int $propertyId)
+    {
+        $property = $this->productPropertyRepository->findOneBy(['id' => $propertyId]);
+        $property->addValue($productPropertyValue);
+        $this->productPropertyRepository->update($property);
+    }
+
+    /*public function getProperty(int $propertyId)
+    {
+    return $this->productPropertyRepository->findOneBy(['id' => $propertyId]);
+    }*/
 
     public function addCategory(Category $category)
     {

@@ -42,7 +42,7 @@ class ProductLanguage
     /**
      * @var string
      *
-     * @ORM\Column(name="subName", type="string", length=255)
+     * @ORM\Column(name="subName", type="string", length=255, nullable=true)
      */
     private $subName = '';
 
@@ -57,7 +57,7 @@ class ProductLanguage
     /**
      * @var string
      *
-     * @ORM\Column(name="fullDescription", type="text")
+     * @ORM\Column(name="fullDescription", type="text", nullable=true)
      */
     private $fullDescription = '';
 
@@ -65,36 +65,44 @@ class ProductLanguage
     /**
      * @var string
      *
-     * @ORM\Column(name="metaTitle", type="string", length=255)
+     * @ORM\Column(name="metaTitle", type="string", length=255, nullable=true)
      */
     private $metaTitle = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="metaDescription", type="string", length=255)
+     * @ORM\Column(name="metaDescription", type="string", length=255, nullable=true)
      */
     private $metaDescription = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unitOfSell", type="string", length=10)
+     * @Assert\NotBlank()
+     */
+    private $unitOfSell;
 
 
     /**
      * @var string
      *
-     * @ORM\Column(name="metaKeywords", type="string", length=255)
+     * @ORM\Column(name="metaKeywords", type="string", length=255, nullable=true)
      */
     private $metaKeywords = '';
 
     /**
      * @var string
      * 
-     * @ORM\Column(name="tax", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $tax = 0.00;
 
     /**
      * @var string
      * 
-     * @ORM\Column(name="price", type="decimal", precision=12, scale=2)
+     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $price = 0.00;
 
@@ -103,7 +111,7 @@ class ProductLanguage
      * ISO 4217 Currency Codes
      *
      * @Assert\NotBlank()
-     * @ORM\Column(name="currency", type="string", length=3)
+     * @ORM\Column(name="currency", type="string", length=7)
      */
     private $currency;
 
@@ -112,6 +120,11 @@ class ProductLanguage
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;
+
+    public function __toString()
+    {
+        return $this->id;
+    }
 
     /**
      * Get id
@@ -292,6 +305,72 @@ class ProductLanguage
     }
 
     /**
+     * Set Tax
+     *
+     * @param string $tax
+     */
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Get Tax
+     *
+     * @return string
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * Set Tax
+     *
+     * @param string $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
      * Set fullDescription
      *
      * @param string $fullDescription
@@ -325,6 +404,18 @@ class ProductLanguage
     public function getProduct()
     {
         return $this->product;
+    }
+
+    public function setUnitOfSell($unitOfSell)
+    {
+        $this->unitOfSell = $unitOfSell;
+
+        return $this;
+    }
+
+    public function getUnitOfSell()
+    {
+        return $this->unitOfSell;
     }
 }
 

@@ -4,21 +4,21 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
- * ProductProperties
+ * ProductProperty
  *
  * @ORM\Table(name="product_properties", uniqueConstraints={@ORM\UniqueConstraint(name="languageKey", columns={"product_id", "langCode", "name"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductPropertiesRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductPropertyRepository")
  */
-class ProductProperties
+class ProductProperty
 {
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="AUTO") 
      */
     private $id;
 
@@ -39,19 +39,46 @@ class ProductProperties
     private $name;
 
     /**
-     * @var array
-     *
-     * @ORM\Column(name="value", type="array")
-     * @Assert\NotBlank()
-     */
-    private $value;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="languages")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ProductPropertyValue", mappedBy="property", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $values;
+
+    public function __construct()
+    {
+        $this->values = new ArrayCollection();
+    }
+
+
+    public function addValue(ProductPropertyValue $ProductPropertyValue)
+    {   
+        $ProductPropertyValue->setProperty($this);
+        $this->values->add($ProductPropertyValue);
+
+        return $this;
+    }
+    
+    public function removeValues(ProductPropertyValue $ProductPropertyValue)
+    {
+        $this->values->removeElement($ProductPropertyValue);
+    }
+
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    public function setValues($values) {
+        foreach ($values as $value) {
+            $value->setProperty($this);
+            $this->values->add($value);            
+        }
+    }
 
     /**
      * Get id
@@ -68,9 +95,9 @@ class ProductProperties
      *
      * @param string $langCode
      *
-     * @return ProductProperties
+     * @return ProductProperty
      */
-    public function setLangCode(string $langCode)
+    public function setLangCode($langCode)
     {
         $this->langCode = $langCode;
 
@@ -92,10 +119,11 @@ class ProductProperties
      *
      * @param string $name
      *
-     * @return ProductProperties
+     * @return ProductProperty
      */
     public function setName(string $name)
     {
+        $name = ucfirst(strtolower($name));
         $this->name = $name;
 
         return $this;
@@ -109,31 +137,7 @@ class ProductProperties
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set value
-     *
-     * @param array $value
-     *
-     * @return ProductProperties
-     */
-    public function setValue(array $value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return array
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
+    }    
 
     public function setProduct(Product $product)
     {

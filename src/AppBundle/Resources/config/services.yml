@@ -9,12 +9,65 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:Category]
 
+  repository.country:
+    class: AppBundle\Repository\CountryRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:Country]
+
+  repository.currency:
+    class: AppBundle\Repository\CurrencyRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:Currency]
+
+  repository.product.property:
+    class: AppBundle\Repository\ProductPropertyRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductProperty]
+
+  repository.product.property.value:
+    class: AppBundle\Repository\ProductPropertyValueRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductPropertyValue]
+
+  repository.image.size:
+    class: AppBundle\Repository\ImageSizeRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ImageSize]
+
   manager.product:
     class: AppBundle\Manager\ProductManager
     share: false
-    arguments: ['@repository.product', '@validator']
+    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value']
 
   manager.category:
     class: AppBundle\Manager\CategoryManager
     share: false
     arguments: ['@repository.category', '@validator']
+
+  manager.country:
+    class: AppBundle\Manager\CountryManager
+    share: false
+    arguments: ['@repository.country', '@validator']
+
+  response.product:
+    class: AppBundle\Services\ResponseService\Product
+    arguments: ['@repository.product']
+
+  response.country:
+    class: AppBundle\Services\ResponseService\Country
+    arguments: ['@repository.country']
+
+  response.currency:
+    class: AppBundle\Services\ResponseService\Currency
+    arguments: ['@repository.currency']
+
+  service.image.saver:
+    class: AppBundle\Services\ImageSaver
+    share: false
+    arguments: ['@repository.image.size']
+
+  validator.sku:
+    class: AppBundle\Validator\Constraints\SKU
+    arguments: ["@repository.product"]
+    tags:
+      - { name: validator.constraint_validator, alias: sku }
