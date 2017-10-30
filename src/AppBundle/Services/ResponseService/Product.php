@@ -2,33 +2,43 @@
 
 namespace AppBundle\Services\ResponseService;
 
-use AppBundle\Repository\ProductRepository;
 use AppBundle\Entity\Product as EntityProduct;
+use AppBundle\Repository\ProductImageRepository;
+use AppBundle\Repository\ProductRepository;
 
 class Product
 {
     private $perPage = 20;
     private $page = 0;
     private $productRepository;
+    private $prodcutImageRepository;
 
-
-    public function __construct(ProductRepository $productRepository)
-    {
+    public function __construct(
+        ProductRepository $productRepository,
+        ProductImageRepository $productImageRepository
+    ) {
         $this->productRepository = $productRepository;
+        $this->productImageRepository = $productImageRepository;
     }
 
-    public function byCountry(string $countryCode):array
+    public function byCountry(string $countryCode): array
     {
         $products = $this->productRepository->findBy([], [], $this->perPage, $this->page);
-        
-        foreach($products as $product) {
+
+        foreach ($products as $product) {
             $product->getLanguage($countryCode);
+            $product->getMainImage();
         }
 
         return $products;
     }
 
-    public function fullProductByProduct(EntityProduct $product):EntityProduct
+    public function allImages($productId)
+    {
+        return $this->productImageRepository->findBy(['product' => $productId], [], $this->perPage, $this->page);
+    }
+
+    public function fullProductByProduct(EntityProduct $product): EntityProduct
     {
         return $this->prepareFullProduct($product);
     }
@@ -43,6 +53,7 @@ class Product
     {
         $product->getAlllanguages();
         $product->getAllProperties();
+        $product->getMainImage();
 
         return $product;
     }

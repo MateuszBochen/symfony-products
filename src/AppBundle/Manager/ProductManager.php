@@ -4,29 +4,34 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\ProductImage;
 use AppBundle\Entity\ProductLanguage;
 use AppBundle\Entity\ProductProperty;
 use AppBundle\Entity\ProductPropertyValue;
 use AppBundle\Repository\ProductPropertyRepository;
 use AppBundle\Repository\ProductPropertyValueRepository;
 use AppBundle\Repository\ProductRepository;
+use AppBundle\Services\ImageSaver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductManager extends BaseManager
 {
     private $productPropertyValueRepository;
     private $productPropertyRepository;
+    private $imageSaver;
 
     public function __construct(
         ProductRepository $productRepository,
         ValidatorInterface $validator,
         ProductPropertyRepository $productPropertyRepository,
-        ProductPropertyValueRepository $productPropertyValueRepository
+        ProductPropertyValueRepository $productPropertyValueRepository,
+        ImageSaver $imageSaver
     ) {
         $this->repository = $productRepository;
         $this->validator = $validator;
         $this->productPropertyValueRepository = $productPropertyValueRepository;
         $this->productPropertyRepository = $productPropertyRepository;
+        $this->imageSaver = $imageSaver;
     }
 
     public function getNewProduct(): Product
@@ -88,11 +93,6 @@ class ProductManager extends BaseManager
         $this->productPropertyRepository->update($property);
     }
 
-    /*public function getProperty(int $propertyId)
-    {
-    return $this->productPropertyRepository->findOneBy(['id' => $propertyId]);
-    }*/
-
     public function addCategory(Category $category)
     {
         $errors = $this->validator->validate($category);
@@ -107,6 +107,12 @@ class ProductManager extends BaseManager
     public function removeCategory(Category $category)
     {
         $this->currentEntity->removeCategory($category);
+    }
+
+    public function addNewImage(ProductImage $productImage)
+    {
+        $this->currentEntity->addImage($productImage);
+        $this->imageSaver->setProductImage($productImage);
     }
 
     private function setDefaultValues()

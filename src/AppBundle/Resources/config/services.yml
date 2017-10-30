@@ -29,6 +29,11 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ProductPropertyValue]
 
+  repository.product.image:
+    class: AppBundle\Repository\ProductImageRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductImage]
+
   repository.image.size:
     class: AppBundle\Repository\ImageSizeRepository
     factory: ["@doctrine", getRepository]
@@ -37,7 +42,7 @@ services:
   manager.product:
     class: AppBundle\Manager\ProductManager
     share: false
-    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value']
+    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@service.image.saver']
 
   manager.category:
     class: AppBundle\Manager\CategoryManager
@@ -51,7 +56,7 @@ services:
 
   response.product:
     class: AppBundle\Services\ResponseService\Product
-    arguments: ['@repository.product']
+    arguments: ['@repository.product', '@repository.product.image']
 
   response.country:
     class: AppBundle\Services\ResponseService\Country
@@ -64,7 +69,7 @@ services:
   service.image.saver:
     class: AppBundle\Services\ImageSaver
     share: false
-    arguments: ['@repository.image.size']
+    arguments: ['%kernel.root_dir%', '@repository.image.size', '@filesystem', '@router']
 
   validator.sku:
     class: AppBundle\Validator\Constraints\SKU

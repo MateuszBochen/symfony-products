@@ -29,6 +29,13 @@ class ProductImageSize
     private $path;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="webAddress", type="string", length=255)
+     */
+    private $webAddress;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="size", type="integer")
@@ -96,12 +103,24 @@ class ProductImageSize
         return $this;
     }
 
+    public function setWebAddress($webAddress)
+    {
+        $this->webAddress = $webAddress;
+
+        return $this;
+    }
+
+    public function getWebAddress()
+    {
+        return $this->webAddress;
+    }
+
     /**
      * Get size
      *
      * @return int
      */
-    public function getSize():int
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -137,9 +156,8 @@ class ProductImageSize
         return $this;
     }
 
-    public function getImage():ProductImage
+    public function getImage(): ProductImage
     {
         return $this->image;
     }
 }
-

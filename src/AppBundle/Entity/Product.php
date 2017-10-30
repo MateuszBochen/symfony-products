@@ -136,6 +136,7 @@ class Product
      * @ORM\OneToMany(targetEntity="ProductImage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
      */
     private $images;
+    private $mainImage;
 
     /**
      * @JMS\Exclude()
@@ -512,6 +513,17 @@ class Product
         if (isset($this->language[0])) {
             $this->language = $this->language[0];
             return $this->language;
+        }
+    }
+
+    public function getMainImage()
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('main', 1));
+        $this->images = $this->images->matching($criteria);
+        if (isset($this->images[0])) {
+            $this->mainImage = $this->images[0];
+            return $this->mainImage;
         }
     }
 

@@ -8,4 +8,5 @@ class ImageSizeEnum
     const SM = 2; // crop
     const MD = 3; // resize
     const LA = 4; // resize
+    const ORIGINAL = 5;
 }

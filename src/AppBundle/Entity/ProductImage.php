@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * ProductImage
@@ -26,7 +27,7 @@ class ProductImage
     /**
      * @var string
      *
-     * @ORM\Column(name="main", type="string", length=4)
+     * @ORM\Column(name="main", type="integer")
      */
     private $main;
 
@@ -35,9 +36,10 @@ class ProductImage
      *
      * @ORM\Column(name="position", type="integer")
      */
-    private $position;
+    private $position = 0;
 
     /**
+     * @JMS\Exclude()
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="images")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -54,6 +56,9 @@ class ProductImage
      */
     private $sizes;
 
+    /**
+     * @JMS\Exclude()
+     */
     private $file;
 
     public function __construct()
@@ -180,7 +185,7 @@ class ProductImage
         return $this->sizes;
     }
 
-    public function setFile($file)
+    public function setFile(UploadedFile $file)
     {
         $this->file = $file;
 

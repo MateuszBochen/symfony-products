@@ -25,7 +25,7 @@ class ProductImageController extends FOSRestController
      */
     public function indexAction(int $productId)
     {
-        return ['ok' => $productId];
+        return $this->get('response.product')->allImages($productId);
     }
 
     /**
@@ -44,7 +44,11 @@ class ProductImageController extends FOSRestController
         $form->submit($request->request->all());
         if ($form->isSubmitted() && $form->isValid()) {
             $productImage->setFile($request->files->get('file'));
-            return $this->get('response.product')->fullProduct($productId);
+            $pm = $this->get('manager.product');
+            $pm->findOneBy(['id' => $productId]);
+            $pm->addNewImage($productImage);
+            $pm->save();
+            return $productImage;
         }
 
         return (new \AppBundle\Helpers\FormException(406, $form))->response();
