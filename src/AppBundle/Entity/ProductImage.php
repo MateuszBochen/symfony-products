@@ -47,12 +47,14 @@ class ProductImage
 
     /**
      * @JMS\Exclude()
-     * @ORM\OneToMany(targetEntity="ProductImageLanguage", mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ProductImageLanguage", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $languages;
 
+    private $allLanguages;
+
     /**
-     * @ORM\OneToMany(targetEntity="ProductImageSize", mappedBy="image", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ProductImageSize", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $sizes;
 
@@ -152,6 +154,22 @@ class ProductImage
     }
 
     /**
+     * Remove language
+     *
+     * @param ProductLanguage $productLanguage
+     */
+    public function removeLanguage(ProductImageLanguage $language)
+    {
+        $this->languages->removeElement($language);
+    }
+
+    public function getAlllanguages()
+    {
+        $this->allLanguages = $this->languages;
+        return $this->allLanguages;
+    }
+
+    /**
      * Add size
      *
      * @param ProductLanguage $productLanguage
@@ -165,24 +183,29 @@ class ProductImage
         return $this;
     }
 
-    private function setLanguages($languages)
+    public function setLanguages($languages)
     {
         $this->languages = $languages;
     }
 
-    private function getLanguages()
+    public function getLanguages()
     {
         return $this->languages;
     }
 
-    private function setSizes($sizes)
+    public function setSizes($sizes)
     {
         $this->sizes = $sizes;
     }
 
-    private function getSizes()
+    public function getSizes()
     {
         return $this->sizes;
+    }
+
+    public function removeSize(ProductImageSize $size)
+    {
+        $this->sizes->removeElement($size);
     }
 
     public function setFile(UploadedFile $file)

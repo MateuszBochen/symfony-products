@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Product;
+
 /**
  * ProductImageRepository
  *
@@ -10,4 +12,50 @@ namespace AppBundle\Repository;
  */
 class ProductImageRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function resetMainImagesForProduct(Product $product)
+    {
+        $qb = $this->createQueryBuilder('pi');
+        $qb->update()
+            ->set('pi.main', 0)
+            ->where('pi.product = :product')
+            ->setParameter('product', $product);
+        $qb->getQuery()
+            ->execute();
+    }
+
+    public function getNextPos(Product $product): int
+    {
+        $qb = $this->createQueryBuilder('pi');
+        $qb->select('MAX(pi.position) AS position')
+            ->where('pi.product = :product')
+            ->setParameter('product', $product);
+        $r = $qb->getQuery()
+            ->getSingleScalarResult();
+
+        return $r ? $r : 0;
+    }
+
+    public function getIdsByPos(int $productId)
+    {
+        $qb = $this->createQueryBuilder('pi');
+        $qb->select('pi.id')
+            ->where('pi.product = :product')
+            ->orderBy('pi.position', 'ASC')
+            ->setParameter('product', $productId);
+        $r = $qb->getQuery()
+            ->getScalarResult();
+
+        return $r;
+    }
+
+    public function updateScalarUpdate($what, $value, int $id)
+    {
+        $qb = $this->createQueryBuilder('pi');
+        $qb->update()
+            ->set('pi.' . $what, $value)
+            ->where('pi.id = :id')
+            ->setParameter('id', $id);
+        $qb->getQuery()
+            ->execute();
+    }
 }

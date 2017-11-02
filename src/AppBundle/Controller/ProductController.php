@@ -2,18 +2,16 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Entity\Product;
-use AppBundle\Form\ProductType;
 use AppBundle\Form\ProductLanguageType;
 use AppBundle\Form\ProductPropertyType;
 use AppBundle\Form\ProductPropertyValueType;
+use AppBundle\Form\ProductType;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Productlanguage controller.
@@ -25,7 +23,7 @@ class ProductController extends FOSRestController
     /**
      * Lists all product entities.
      *
-     * @Route("/{langCode}/{page}/{limit}", name="product_index")
+     * @Route("/{langCode}/{page}/{limit}", name="product_index", requirements={"langCode" = "[a-z]{2}"})
      * @Method("GET")
      */
     public function indexAction(string $langCode, int $page, int $limit)
@@ -49,7 +47,7 @@ class ProductController extends FOSRestController
      *
      * @Route("", name="product_create")
      * @Method("POST")
-     * @Rest\View(statusCode=201) 
+     * @Rest\View(statusCode=201)
      */
     public function createAction(Request $request)
     {
@@ -75,7 +73,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/{productId}", name="product_update")
      * @Method("PUT")
-     * @Rest\View(statusCode=202) 
+     * @Rest\View(statusCode=202)
      */
     public function updateAction(Request $request, $productId)
     {
@@ -101,7 +99,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/language/{productId}/{langCode}", name="product_add_language")
      * @Method("PUT")
-     * @Rest\View(statusCode=201) 
+     * @Rest\View(statusCode=201)
      */
     public function addLanguageAction(Request $request, int $productId, string $langCode)
     {
@@ -114,23 +112,21 @@ class ProductController extends FOSRestController
         $langIsFound = false;
         foreach ($languages as $lang) {
             if ($lang->getLangCode() == $langCode) {
-               $language = $lang;
-               $langIsFound = true;
+                $language = $lang;
+                $langIsFound = true;
             }
         }
 
-        $product = $pm->findOneBy(['id' => $productId]);
         $form = $this->createForm(ProductLanguageType::class, $language);
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$langIsFound) {
-              $pm->addLanguage($language);
+                $pm->addLanguage($language);
             }
             $pm->save();
-            //$product->getAlllanguages();
             return $this->get('response.product')->fullProductByProduct($product);
         }
-        
+
         $res = new \AppBundle\Helpers\FormException(406, $form);
         return $res->response();
     }
@@ -140,10 +136,10 @@ class ProductController extends FOSRestController
      *
      * @Route("/property/{productId}", name="product_add_property")
      * @Method("PUT")
-     * @Rest\View(statusCode=201) 
+     * @Rest\View(statusCode=201)
      */
     public function addPropertyAction(Request $request, int $productId)
-    {   
+    {
         $prop = new \AppBundle\Entity\ProductProperty();
         $data = json_decode($request->getContent(), true);
         $form = $this->createForm(ProductPropertyType::class, $prop);
@@ -155,7 +151,7 @@ class ProductController extends FOSRestController
             $pm->save();
             return $this->get('response.product')->fullProductByProduct($product);
         }
-        
+
         return (new \AppBundle\Helpers\FormException(406, $form))->response();
     }
 
@@ -164,10 +160,10 @@ class ProductController extends FOSRestController
      *
      * @Route("/{productId}/property/value/{propertyValueId}", name="product_delete_property_value")
      * @Method("DELETE")
-     * @Rest\View(statusCode=202) 
+     * @Rest\View(statusCode=202)
      */
     public function deletePropertyValue(Request $request, int $productId, int $propertyValueId)
-    {   
+    {
         $pm = $this->get('manager.product');
         $pm->removePropertyValue($propertyValueId);
         $pm = $this->get('manager.product');
@@ -179,7 +175,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/{productId}/property/{propertyId}/value", name="product_add_property_value")
      * @Method("POST")
-     * @Rest\View(statusCode=201) 
+     * @Rest\View(statusCode=201)
      */
     public function addValueToPropertyAction(Request $request, int $productId, int $propertyId)
     {
@@ -200,7 +196,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/{productId}/property/{propertyId}", name="product_update_property")
      * @Method("PATCH")
-     * @Rest\View(statusCode=202) 
+     * @Rest\View(statusCode=202)
      */
     public function updatePropertyAction(Request $request, int $productId, int $propertyId)
     {
@@ -208,10 +204,10 @@ class ProductController extends FOSRestController
         $pm = $this->get('manager.product');
         $product = $pm->findOneBy(['id' => $productId]);
         $property = $product->getPropertyById($propertyId);
-        
+
         $form = $this->createForm(ProductPropertyType::class, $property, ['method' => $request->getMethod()]);
         $form->submit($data, false);
-        if ($form->isSubmitted() && $form->isValid()) {            
+        if ($form->isSubmitted() && $form->isValid()) {
             $pm = $this->get('manager.product');
             $pm->save();
             return $this->get('response.product')->fullProductByProduct($product);
@@ -224,7 +220,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/{productId}/property/{propertyId}", name="product_delete_property")
      * @Method("DELETE")
-     * @Rest\View(statusCode=202) 
+     * @Rest\View(statusCode=202)
      */
     public function deletePropertyAction(Request $request, int $productId, int $propertyId)
     {
@@ -239,7 +235,6 @@ class ProductController extends FOSRestController
 
     /**/
 }
-
 
 /*"brand":"",
 "countryOfProduction":"pl",

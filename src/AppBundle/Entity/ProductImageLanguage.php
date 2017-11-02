@@ -3,11 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\Constraints as AppAssert;
-use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * ProductImageLanguage
@@ -43,7 +38,7 @@ class ProductImageLanguage
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
@@ -52,7 +47,6 @@ class ProductImageLanguage
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $image;
-
 
     /**
      * Get id
@@ -143,9 +137,8 @@ class ProductImageLanguage
         return $this;
     }
 
-    public function getImage():ProductImage
+    public function getImage(): ProductImage
     {
         return $this->image;
     }
 }
-

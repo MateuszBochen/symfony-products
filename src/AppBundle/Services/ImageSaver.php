@@ -38,7 +38,15 @@ class ImageSaver
 
         $this->saveOriginal();
         $this->saveThumb();
-        //$this->uploadedFile();
+    }
+
+    public function deleteProductImage(ProductImage $productImage)
+    {
+        $sizes = $productImage->getSizes();
+        foreach ($sizes as $size) {
+            $this->filesystem->remove($size->getPath());
+            $productImage->removeSize($size);
+        }
     }
 
     private function saveOriginal()

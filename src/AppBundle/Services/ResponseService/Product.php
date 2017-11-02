@@ -35,7 +35,13 @@ class Product
 
     public function allImages($productId)
     {
-        return $this->productImageRepository->findBy(['product' => $productId], [], $this->perPage, $this->page);
+        $productImages = $this->productImageRepository->findBy(['product' => $productId], ['position' => 'ASC'], $this->perPage, $this->page);
+
+        foreach ($productImages as $productImage) {
+            $productImage->getAlllanguages();
+        }
+
+        return $productImages;
     }
 
     public function fullProductByProduct(EntityProduct $product): EntityProduct

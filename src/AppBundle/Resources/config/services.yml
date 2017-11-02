@@ -1,4 +1,9 @@
 services:
+  kernel.event_listener.raw_request_transformer:
+    class: AppBundle\EventListener\RawRequestTransformerListener
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100 }
+
   repository.product:
     class: AppBundle\Repository\ProductRepository
     factory: ["@doctrine", getRepository]
@@ -42,7 +47,12 @@ services:
   manager.product:
     class: AppBundle\Manager\ProductManager
     share: false
-    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@service.image.saver']
+    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@manager.product.image']
+
+  manager.product.image:
+    class: AppBundle\Manager\ProductImageManager
+    share: false
+    arguments: ['@repository.product.image', '@service.image.saver']
 
   manager.category:
     class: AppBundle\Manager\CategoryManager

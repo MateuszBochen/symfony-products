@@ -132,10 +132,11 @@ class Product
     private $language;
 
     /**
-     * @JMS\Exclude()
+     * JMS\Exclude()
      * @ORM\OneToMany(targetEntity="ProductImage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
      */
     private $images;
+
     private $mainImage;
 
     /**
@@ -470,6 +471,11 @@ class Product
         return $this;
     }
 
+    public function getImages()
+    {
+        return $this->images;
+    }
+
     /**
      * Add language
      *
@@ -520,11 +526,26 @@ class Product
     {
         $criteria = Criteria::create();
         $criteria->where(Criteria::expr()->eq('main', 1));
-        $this->images = $this->images->matching($criteria);
-        if (isset($this->images[0])) {
+        $images = $this->images->matching($criteria);
+        if (isset($images[0])) {
             $this->mainImage = $this->images[0];
             return $this->mainImage;
         }
+    }
+
+    public function getImageById(int $imageId): ProductImage
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('id', $imageId));
+        $images = $this->images->matching($criteria);
+        if (isset($images[0])) {
+            return $images[0];
+        }
+    }
+
+    public function removeImage(ProductImage $image)
+    {
+        $this->images->removeElement($image);
     }
 
     public function getPropertyById(int $id)
