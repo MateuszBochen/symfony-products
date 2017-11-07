@@ -5,20 +5,21 @@ namespace AppBundle\Services;
 use AppBundle\Entity\ProductImage;
 use AppBundle\Entity\ProductImageSize;
 use AppBundle\Enums\ImageSizeEnum;
+use AppBundle\Helpers\FilesHelper;
 use AppBundle\Repository\ImageSizeRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use \Eventviva\ImageResize;
 
 // using https://github.com/eventviva/php-image-resize
-class ImageSaver
+class ImageSaver extends FilesHelper
 {
     const MAIN_DIR = 'products';
 
     private $imageSizeRepository;
-    private $savePath;
+    //private $savePath;
     private $originalPath;
     private $originalName;
-    private $filesystem;
+    //private $filesystem;
 
     public function __construct(
         string $rootDir,
@@ -95,20 +96,20 @@ class ImageSaver
         }
     }
 
-    private function generateDirName(): string
-    {
-        $t = md5(time());
-        $t = substr($t, 0, 4);
+    /*private function generateDirName(): string
+{
+$t = md5(time());
+$t = substr($t, 0, 4);
 
-        if (!$this->filesystem->exists($this->savePath . '/' . $t)) {
-            $this->filesystem->mkdir($this->savePath . '/' . $t, 0777);
-        }
+if (!$this->filesystem->exists($this->savePath . '/' . $t)) {
+$this->filesystem->mkdir($this->savePath . '/' . $t, 0777);
+}
 
-        return $t;
-    }
+return $t;
+}
 
-    private function newFilename($ext)
-    {
-        return crc32(microtime(true)) . '.' . $ext;
-    }
+private function newFilename($ext)
+{
+return crc32(microtime(true)) . '.' . $ext;
+}*/
 }

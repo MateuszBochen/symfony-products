@@ -46,7 +46,8 @@
         ],
         "post-install-cmd": [
             "@symfony-scripts",
-            "mkdir -m 777 web/products"
+            "mkdir -m 777 web/products",
+            "mkdir -m 777 web/files"
         ],
         "post-update-cmd": [
             "@symfony-scripts"

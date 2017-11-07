@@ -44,6 +44,12 @@ class Product
         return $productImages;
     }
 
+    public function allFilesByLanguage($productId, $langCode)
+    {
+        $product = $this->productRepository->findOneBy(['id' => $productId]);
+        return $product->getFilesByLnagCode($langCode);
+    }
+
     public function fullProductByProduct(EntityProduct $product): EntityProduct
     {
         return $this->prepareFullProduct($product);
@@ -55,7 +61,7 @@ class Product
         return $this->prepareFullProduct($product);
     }
 
-    private function prepareFullProduct($product)
+    private function prepareFullProduct(EntityProduct $product)
     {
         $product->getAlllanguages();
         $product->getAllProperties();

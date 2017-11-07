@@ -39,6 +39,11 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ProductImage]
 
+  repository.product.file:
+    class: AppBundle\Repository\ProductFileRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductFile]
+
   repository.image.size:
     class: AppBundle\Repository\ImageSizeRepository
     factory: ["@doctrine", getRepository]
@@ -47,12 +52,17 @@ services:
   manager.product:
     class: AppBundle\Manager\ProductManager
     share: false
-    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@manager.product.image']
+    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@manager.product.image', '@manager.product.file']
 
   manager.product.image:
     class: AppBundle\Manager\ProductImageManager
     share: false
     arguments: ['@repository.product.image', '@service.image.saver']
+
+  manager.product.file:
+    class: AppBundle\Manager\ProductFileManager
+    share: false
+    arguments: ['@service.file.saver', '@repository.product.file']
 
   manager.category:
     class: AppBundle\Manager\CategoryManager
@@ -80,6 +90,11 @@ services:
     class: AppBundle\Services\ImageSaver
     share: false
     arguments: ['%kernel.root_dir%', '@repository.image.size', '@filesystem', '@router']
+
+  service.file.saver:
+    class: AppBundle\Services\FileSaver
+    share: false
+    arguments: ['%kernel.root_dir%', '@filesystem', '@router']
 
   validator.sku:
     class: AppBundle\Validator\Constraints\SKU

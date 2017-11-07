@@ -132,12 +132,19 @@ class Product
     private $language;
 
     /**
-     * JMS\Exclude()
+     * @JMS\Exclude()
      * @ORM\OneToMany(targetEntity="ProductImage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
      */
     private $images;
 
     private $mainImage;
+
+    /**
+     * @JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="ProductFile", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $files;
+    private $langFiles;
 
     /**
      * @JMS\Exclude()
@@ -476,6 +483,42 @@ class Product
         return $this->images;
     }
 
+    public function addFile(ProductFile $file)
+    {
+        $file->setProduct($this);
+        $this->files->add($file);
+
+        return $this;
+    }
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    public function getFilesByLnagCode(string $langCode)
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('langCode', $langCode));
+        $this->langFiles = $this->files->matching($criteria);
+        return $this->langFiles;
+    }
+
+    public function getFileById(int $fileId): ProductFile
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('id', $fileId));
+        $files = $this->files->matching($criteria);
+        if (isset($files[0])) {
+            return $files[0];
+        }
+    }
+
+    public function removeFile(ProductFile $file)
+    {
+        $this->files->removeElement($file);
+    }
+
     /**
      * Add language
      *
@@ -525,10 +568,10 @@ class Product
     public function getMainImage()
     {
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('main', 1));
+        $criteria->where(Criteria::expr()->eq('main', true));
         $images = $this->images->matching($criteria);
         if (isset($images[0])) {
-            $this->mainImage = $this->images[0];
+            $this->mainImage = $images[0];
             return $this->mainImage;
         }
     }

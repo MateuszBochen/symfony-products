@@ -4,10 +4,12 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\ProductFile;
 use AppBundle\Entity\ProductImage;
 use AppBundle\Entity\ProductLanguage;
 use AppBundle\Entity\ProductProperty;
 use AppBundle\Entity\ProductPropertyValue;
+use AppBundle\Manager\ProductFileManager;
 use AppBundle\Manager\ProductImageManager;
 use AppBundle\Repository\ProductPropertyRepository;
 use AppBundle\Repository\ProductPropertyValueRepository;
@@ -25,7 +27,8 @@ class ProductManager extends BaseManager
         ValidatorInterface $validator,
         ProductPropertyRepository $productPropertyRepository,
         ProductPropertyValueRepository $productPropertyValueRepository,
-        ProductImageManager $productImageManager
+        ProductImageManager $productImageManager,
+        ProductFileManager $productFileManager
 
     ) {
         $this->repository = $productRepository;
@@ -33,6 +36,7 @@ class ProductManager extends BaseManager
         $this->productPropertyValueRepository = $productPropertyValueRepository;
         $this->productPropertyRepository = $productPropertyRepository;
         $this->productImageManager = $productImageManager;
+        $this->productFileManager = $productFileManager;
     }
 
     public function getNewProduct(): Product
@@ -115,10 +119,10 @@ class ProductManager extends BaseManager
         return $this->productImageManager;
     }
 
-    /*public function getImageBy(array $conditions)
+    public function getProductFileManager()
     {
-    return $this->productImageManager->findOneBy($conditions);
-    }*/
+        return $this->productFileManager;
+    }
 
     public function addNewImage(ProductImage $productImage)
     {
@@ -129,6 +133,18 @@ class ProductManager extends BaseManager
     public function updateImage(ProductImage $productImage)
     {
         $this->productImageManager->updateImage($productImage);
+    }
+
+    public function addNewFile(ProductFile $file)
+    {
+        $this->currentEntity->addFile($file);
+        $this->productFileManager->addNewFile($file);
+    }
+
+    public function updateFile(ProductFile $file)
+    {
+        $this->currentEntity = $file->getProduct();
+        $this->productFileManager->updateFile($file);
     }
 
     private function setDefaultValues()
