@@ -78,6 +78,10 @@ services:
     class: AppBundle\Services\ResponseService\Product
     arguments: ['@repository.product', '@repository.product.image']
 
+  response.category:
+    class: AppBundle\Services\ResponseService\Category
+    arguments: ['@repository.category']
+
   response.country:
     class: AppBundle\Services\ResponseService\Country
     arguments: ['@repository.country']

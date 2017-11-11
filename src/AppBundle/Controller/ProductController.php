@@ -23,12 +23,26 @@ class ProductController extends FOSRestController
     /**
      * Lists all product entities.
      *
-     * @Route("/{langCode}/{page}/{limit}", name="product_index", requirements={"langCode" = "[a-z]{2}"})
+     * @Route("/{langCode}/{page}/{limit}/{orderBy}/{orderDir}", name="product_index", requirements={"langCode" = "[a-z]{2}"})
      * @Method("GET")
      */
-    public function indexAction(string $langCode, int $page, int $limit)
+    public function indexAction(string $langCode, int $page, int $limit, string $orderBy, string $orderDir)
     {
-        return $this->get('response.product')->byCountry($langCode);
+        return $this->get('response.product')->byCountry($langCode, '', $page, $orderBy, $orderDir);
+    }
+
+    /**
+     * Lists all product entities.
+     *
+     * @Route("/{langCode}/{page}/{limit}/{orderBy}/{orderDir}", name="product_search", requirements={"langCode" = "[a-z]{2}"})
+     * @Method("POST")
+     */
+    public function searchAction(Request $request, string $langCode, int $page, int $limit, string $orderBy, string $orderDir)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->get('response.product')->byCountry($langCode, $data['word'], $page, $orderBy, $orderDir);
+
     }
 
     /**
@@ -231,6 +245,53 @@ class ProductController extends FOSRestController
         $pm->removeProperty($property);
         $pm->save();
         return $this->get('response.product')->fullProductByProduct($product);
+    }
+
+    /**
+     * Add products to category
+     *
+     * @Route("/category/{categoryId}", name="product_add_category_to_products")
+     * @Method("POST")
+     * @Rest\View(statusCode=201)
+     */
+    public function addCategoryToProducts(Request $request, int $categoryId)
+    {
+        $cm = $this->get('manager.category');
+        $pm = $this->get('manager.product');
+
+        $category = $cm->findOneBy(['id' => $categoryId]);
+
+        $productsId = json_decode($request->getContent(), true);
+        $addedList = [];
+        foreach ($productsId as $productId) {
+            $product = $pm->findOneBy(['id' => $productId]);
+
+            if ($pm->addCategory($category)) {
+                $pm->save();
+                $addedList[] = $productId;
+            }
+        }
+        return $addedList;
+        //return $this->get('response.product')->byCountry('pl', $page);
+    }
+
+    /**
+     * Add products to category
+     *
+     * @Route("/category/{categoryId}/{productId}", name="product_delete_category_form_product")
+     * @Method("DELETE")
+     * @Rest\View(statusCode=202)
+     */
+    public function deleteCategoryFromProduct(Request $request, int $categoryId, int $productId)
+    {
+        $pm = $this->get('manager.product');
+        $cm = $this->get('manager.category');
+        $product = $pm->findOneBy(['id' => $productId]);
+        $category = $cm->findOneBy(['id' => $categoryId]);
+        $pm->removeCategory($category);
+        $pm->save();
+        return ['OK'];
+        //return $this->get('response.product')->byCountry('pl', $page);
     }
 
     /**/

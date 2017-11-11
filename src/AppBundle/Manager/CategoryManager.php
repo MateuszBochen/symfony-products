@@ -2,9 +2,9 @@
 
 namespace AppBundle\Manager;
 
-use AppBundle\Repository\CategoryRepository;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\CategoryLanguage;
+use AppBundle\Repository\CategoryRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CategoryManager extends BaseManager
@@ -15,17 +15,63 @@ class CategoryManager extends BaseManager
         $this->validator = $validator;
     }
 
-    public function getNewCategory():Category
+    public function getNewCategory(): Category
     {
         $category = new Category();
-        //$this->setDefaultValues();
-
-        
         $this->currentEntity = $category;
         return $category;
     }
 
-    public function findOneBy(array $conditions):Category
+    public function createNewCategory(string $name, int $parentId, string $langCode)
+    {
+        $this->currentEntity = new Category();
+        $this->currentEntity->setMainName($name);
+
+        $language = new CategoryLanguage();
+        $language->setLangCode($langCode);
+        $language->setName($name);
+        $language->setDescription('');
+
+        $this->currentEntity->addLanguage($language);
+
+        $this->save();
+
+        if ($parentId === 0) {
+
+            $ip = $this->currentEntity->getId() . '.';
+            $this->currentEntity->setIp($ip);
+            $this->save();
+
+            return true;
+        }
+
+        $parent = $this->repository->getParent($parentId);
+        $ip = $parent->getIp() . $this->currentEntity->getId() . '.';
+        $this->currentEntity->setIp($ip);
+        $parent->addChild($this->currentEntity);
+
+        $this->save();
+    }
+
+    public function updateCategory(int $categoryId, string $name, string $langCode)
+    {
+        $this->currentEntity = $this->repository->findOneBy(['id' => $categoryId]);
+        $language = $this->currentEntity->getLanguage($langCode);
+
+        $this->currentEntity->setMainName($name);
+        if ($language) {
+            $language->setName($name);
+        } else {
+            $language = new CategoryLanguage();
+            $language->setLangCode($langCode);
+            $language->setName($name);
+            $this->addLanguage($language);
+        }
+
+        $this->save();
+    }
+
+    public function findOneBy(array $conditions): Category
     {
         $this->currentEntity = $this->repository->findOneBy($conditions);
 

@@ -8,7 +8,13 @@ use AppBundle\Repository\ProductRepository;
 
 class Product
 {
-    private $perPage = 20;
+    const ORDER_COLUMNS = [
+        'sku' => 'p.sku',
+        'id' => 'p.id',
+        'name' => 'pl.name',
+    ];
+
+    private $perPage = 10;
     private $page = 0;
     private $productRepository;
     private $prodcutImageRepository;
@@ -21,16 +27,68 @@ class Product
         $this->productImageRepository = $productImageRepository;
     }
 
-    public function byCountry(string $countryCode): array
+    public function byCountry(string $countryCode, $word, $page, $orderBy, $orderDir): array
     {
-        $products = $this->productRepository->findBy([], [], $this->perPage, $this->page);
+        if (!isset(self::ORDER_COLUMNS[$orderBy])) {
+            return [];
+        }
+
+        $orderDir = strtoupper($orderDir);
+        if (!($orderDir === 'DESC' || $orderDir === 'ASC')) {
+            return [];
+        }
+
+        $orderColumn = self::ORDER_COLUMNS[$orderBy];
+
+        $products = $this->productRepository->search($countryCode, $word, $this->perPage, $this->perPage * $page, $orderColumn, $orderDir);
 
         foreach ($products as $product) {
             $product->getLanguage($countryCode);
             $product->getMainImage();
+            $product->setCategoriesNames($this->prepareCategories($product, $countryCode));
         }
 
-        return $products;
+        $count = $this->productRepository->countAllProducts();
+
+        return [
+            'products' => $products,
+            'pages' => ceil($count / $this->perPage),
+        ];
+    }
+
+    /*public function search(string $countryCode, $word, $page, $orderBy, $orderDir)
+    {
+    $products = $this->productRepository->search($countryCode, $word, $this->perPage, $this->perPage * $page);
+
+    foreach ($products as $product) {
+    $product->getLanguage($countryCode);
+    $product->getMainImage();
+    $product->setCategoriesNames($this->prepareCategories($product, $countryCode));
+    }
+
+    $count = $this->productRepository->countAllProducts();
+
+    return [
+    'products' => $products,
+    'pages' => ceil($count / $this->perPage),
+    ];
+    }*/
+
+    private function prepareCategories($product, $countryCode)
+    {
+        $returnArray = [];
+        $categories = $product->getCategories();
+
+        foreach ($categories as $category) {
+            $lang = $category->getLanguage($countryCode);
+            $a = [
+                'id' => $category->getId(),
+                'language' => $lang,
+            ];
+            $returnArray[] = $a;
+        }
+
+        return $returnArray;
     }
 
     public function allImages($productId)

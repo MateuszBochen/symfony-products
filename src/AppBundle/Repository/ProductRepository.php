@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Product;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * ProductRepository
@@ -12,32 +13,39 @@ use AppBundle\Entity\Product;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    private $total;
+
     public function save(Product $product)
     {
         $this->_em->persist($product);
         $this->_em->flush();
     }
 
+    public function countAllProducts()
+    {
+        return $this->total;
+    }
+
     /*public function findOneByCountryCode(int $productId, string $countryCode)
     {
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.languages', 'pl')
-            ->where('p.id = :productId')
-            ->andWhere('pl.langCode = :countryCode')
-            ->setParameter('productId', $productId)
-            ->setParameter('countryCode', $countryCode)
-            ->getQuery()
-            ->getResult();
+    return $this->createQueryBuilder('p')
+    ->leftJoin('p.languages', 'pl')
+    ->where('p.id = :productId')
+    ->andWhere('pl.langCode = :countryCode')
+    ->setParameter('productId', $productId)
+    ->setParameter('countryCode', $countryCode)
+    ->getQuery()
+    ->getResult();
     }
 
     public function findByCountryCode(string $countryCode)
     {
-        return $this->createQueryBuilder('p')
-            ->leftJoin('p.languages', 'pl')
-            ->andWhere('pl.langCode = :countryCode')
-            ->setParameter('countryCode', $countryCode)
-            ->getQuery()
-            ->getResult();
+    return $this->createQueryBuilder('p')
+    ->leftJoin('p.languages', 'pl')
+    ->andWhere('pl.langCode = :countryCode')
+    ->setParameter('countryCode', $countryCode)
+    ->getQuery()
+    ->getResult();
     }*/
 
     public function update(Product $product)
@@ -50,5 +58,32 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->remove($product);
         $this->_em->flush();
+    }
+
+    public function search(string $langCode, string $word, int $limit, int $offset, $orderBy, $orderDir)
+    {
+        $q = $this->createQueryBuilder('p')
+            ->leftJoin('p.languages', 'pl', Expr\Join::WITH, 'pl.langCode = :langCode')
+            ->setParameter('langCode', $langCode);
+
+        if ($word !== '') {
+            $q->where('pl.name LIKE :word')
+                ->orWhere('p.sku LIKE :word')
+                ->orWhere('p.ean LIKE :word')
+                ->setParameter('word', '%' . $word . '%');
+        }
+
+        $q->getQuery(); //->getResult();
+
+        $this->total = $q->select('COUNT(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $q->select('p')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy($orderBy, $orderDir)
+            ->getQuery()->getResult();
+
     }
 }

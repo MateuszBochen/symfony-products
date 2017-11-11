@@ -159,6 +159,8 @@ class Product
      * @ORM\ManyToMany(targetEntity="Category", mappedBy="products")
      */
     private $categories;
+    private $categoriesNames;
+    private $category;
 
     public function __construct()
     {
@@ -654,17 +656,44 @@ class Product
      */
     public function addCategory(Category $category)
     {
+        if ($this->categories->contains($category)) {
+            return false;
+        }
+
         $category->addProduct($this);
         $this->categories->add($category);
 
-        return $this;
+        return true;
     }
+
+    /*public function getCategoryById(int $id)
+    {
+    $criteria = Criteria::create();
+    $criteria->where(Criteria::expr()->eq('id', $id));
+    $this->category = $this->categories->matching($criteria);
+    if (isset($this->category[0])) {
+    $this->category = $this->category[0];
+    return $this->category;
+    }
+    }*/
 
     public function setCategories($categories)
     {
         //$this->categories = $categories;
 
         return $this;
+    }
+
+    public function setCategoriesNames(array $categoriesNames)
+    {
+        $this->categoriesNames = $categoriesNames;
+
+        return $this;
+    }
+
+    public function getCategoriesNames()
+    {
+        return $this->categoriesNames = $categoriesNames;
     }
 
     /**

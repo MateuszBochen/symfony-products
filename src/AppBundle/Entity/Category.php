@@ -2,9 +2,10 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Category
@@ -24,31 +25,52 @@ class Category
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="mainName", type="string", length=255)
+     */
+    private $mainName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ip", type="string", length=255)
+     */
+    private $ip = 0;
+
+    /**
      * One Category has Many Categories.
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
+    private $childrenCount;
 
     /**
+     * @JMS\Exclude()
      * Many Categories have One Category.
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
-    
+
     /**
+     *
+     * @JMS\Exclude()
      * @ORM\OneToMany(targetEntity="CategoryLanguage", mappedBy="category", cascade={"persist"}, orphanRemoval=true)
      */
     private $languages;
+    private $language;
 
     /**
-     * Many Users have Many Groups.
+     *
+     * @JMS\Exclude()
      * @ORM\ManyToMany(targetEntity="Product", inversedBy="categories")
      * @ORM\JoinTable(name="products_categories")
      */
     private $products;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->children = new ArrayCollection();
         $this->languages = new ArrayCollection();
         $this->products = new ArrayCollection();
@@ -73,11 +95,20 @@ class Category
      * @return Product
      */
     public function addChild(Category $category)
-    {   
+    {
         $category->setParent($this);
         $this->children->add($category);
 
         return $this;
+    }
+
+    /**
+     * Get children
+     *
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 
     /**
@@ -107,9 +138,9 @@ class Category
      *
      * @return Category
      */
-    public function setName($name)
+    public function setMainName($mainName)
     {
-        $this->name = $name;
+        $this->mainName = $mainName;
 
         return $this;
     }
@@ -119,9 +150,21 @@ class Category
      *
      * @return string
      */
-    public function getName()
+    public function getMainName()
     {
-        return $this->name;
+        return $this->mainName;
+    }
+
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    public function getIp()
+    {
+        return $this->ip;
     }
 
     /**
@@ -131,7 +174,7 @@ class Category
      * @return Category
      */
     public function addLanguage(CategoryLanguage $categoryLanguage)
-    {   
+    {
         $categoryLanguage->setCategory($this);
         $this->languages->add($categoryLanguage);
 
@@ -150,25 +193,23 @@ class Category
 
     public function getLanguages()
     {
-        return $this->languages;   
+        return $this->languages;
     }
 
-    public function getLanguage(string $code):CategoryLanguage
+    public function getLanguage(string $code)
     {
         $criteria = Criteria::create();
-        
         $criteria->where(Criteria::expr()->eq('langCode', $code));
-        
-        $langages = $this->languages->matching($criteria);
-
-        if(isset($langages[0])) {
-            return $langages[0];
+        $this->language = $this->languages->matching($criteria);
+        if (isset($this->language[0])) {
+            $this->language = $this->language[0];
+            return $this->language;
         }
     }
 
     public function addProduct(Product $product)
     {
-         $this->products->add($product);
+        $this->products->add($product);
     }
 
     /**
@@ -179,5 +220,17 @@ class Category
     public function removeProduct(Product $product)
     {
         $this->products->removeElement($product);
+    }
+
+    public function setChildrenCount($count)
+    {
+        $this->childrenCount = $count;
+
+        return $this;
+    }
+
+    public function getChildrenCount()
+    {
+        return $this->childrenCount;
     }
 }

@@ -106,7 +106,7 @@ class ProductManager extends BaseManager
             throw new ManagerValidationException($errors);
         }
 
-        $this->currentEntity->addCategory($category);
+        return $this->currentEntity->addCategory($category);
     }
 
     public function removeCategory(Category $category)

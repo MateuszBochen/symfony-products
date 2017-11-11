@@ -29,4 +29,14 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->remove($category);
         $this->_em->flush();
     }
+
+    public function getParent($parent)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('c')
+            ->where('c.id = :parent')
+            ->setParameter('parent', $parent);
+        return $qb->getQuery()
+            ->getSingleResult();
+    }
 }

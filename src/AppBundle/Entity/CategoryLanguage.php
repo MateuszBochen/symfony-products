@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -50,9 +51,8 @@ class CategoryLanguage
      * @var string
      *
      * @ORM\Column(name="description", type="text")
-     * @Assert\NotBlank()
      */
-    private $description;
+    private $description = '';
 
     /**
      * @var string
@@ -60,7 +60,6 @@ class CategoryLanguage
      * @ORM\Column(name="fullDescription", type="text")
      */
     private $fullDescription = '';
-
 
     /**
      * @var string
@@ -76,7 +75,6 @@ class CategoryLanguage
      */
     private $metaDescription = '';
 
-
     /**
      * @var string
      *
@@ -85,6 +83,7 @@ class CategoryLanguage
     private $metaKeywords = '';
 
     /**
+     * @JMS\Exclude()
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="languages")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -299,9 +298,8 @@ class CategoryLanguage
         return $this;
     }
 
-    public function getCategory():Category
+    public function getCategory(): Category
     {
         return $this->category;
     }
 }
-

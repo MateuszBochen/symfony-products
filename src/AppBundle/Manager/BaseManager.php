@@ -18,14 +18,13 @@ class BaseManager
 
         if ($this->currentEntity->getId()) {
             $this->repository->update($this->currentEntity);
-        }
-        else {
+        } else {
             $this->repository->save($this->currentEntity);
         }
     }
 
     public function remove()
     {
-        $this->repository->remove($currentEntity);
+        $this->repository->remove($this->currentEntity);
     }
 }
