@@ -637,15 +637,15 @@ class Product
         $this->properties->removeElement($productProperty);
     }
 
-    public function getProperties(): array
+    public function getProperties()
     {
         return $this->properties;
     }
 
-    public function getAllProperties()
+    public function setAllProperties($properties)
     {
-        $this->allProperties = $this->properties;
-        return $this->allProperties = $this->allProperties;
+        $this->allProperties = $properties;
+        return $this;
     }
 
     /**

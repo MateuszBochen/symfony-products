@@ -6,14 +6,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductPropertyValueType extends AbstractType
+class StorageType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('value');
+        $builder
+            ->add('name')
+            ->add('houseNumber')
+            ->add('city')
+            ->add('street')
+            ->add('postCode')
+            ->add('country')
+            ->add('lat')
+            ->add('lng');
     }
 
     /**
@@ -23,7 +31,7 @@ class ProductPropertyValueType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            // 'data_class' => 'AppBundle\Entity\ProductPropertyValue'
+            'data_class' => 'AppBundle\Entity\Storage',
         ));
     }
 
@@ -32,7 +40,7 @@ class ProductPropertyValueType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_productpropertyvalue';
+        return 'appbundle_storage';
     }
 
 }

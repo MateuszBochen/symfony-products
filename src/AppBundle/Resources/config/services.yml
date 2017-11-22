@@ -29,10 +29,20 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ProductProperty]
 
+  repository.product.property.language:
+    class: AppBundle\Repository\ProductPropertyLanguageRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductPropertyLanguage]
+
   repository.product.property.value:
     class: AppBundle\Repository\ProductPropertyValueRepository
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ProductPropertyValue]
+
+  repository.product.property.value.language:
+    class: AppBundle\Repository\ProductPropertyValueLanguageRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductPropertyValueLanguage]
 
   repository.product.image:
     class: AppBundle\Repository\ProductImageRepository
@@ -49,10 +59,26 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ImageSize]
 
+  repository.storage:
+    class: AppBundle\Repository\StorageRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:Storage]
+
+  manager.storage:
+    class: AppBundle\Manager\StorageManager
+    share: false
+    arguments: ['@repository.storage', '@validator']
+
+
   manager.product:
     class: AppBundle\Manager\ProductManager
     share: false
-    arguments: ['@repository.product', '@validator', '@repository.product.property', '@repository.product.property.value', '@manager.product.image', '@manager.product.file']
+    arguments: ['@repository.product', '@validator', '@manager.product.image', '@manager.product.file', '@manager.product.property']
+
+  manager.product.property:
+    class: AppBundle\Manager\ProductPropertyManager
+    share: false
+    arguments: ['@validator', '@repository.product.property', '@repository.product.property.language', '@repository.product.property.value', '@repository.product.property.value.language']
 
   manager.product.image:
     class: AppBundle\Manager\ProductImageManager
@@ -77,6 +103,10 @@ services:
   response.product:
     class: AppBundle\Services\ResponseService\Product
     arguments: ['@repository.product', '@repository.product.image']
+
+  response.storage:
+    class: AppBundle\Services\ResponseService\Storage
+    arguments: ['@repository.storage']
 
   response.category:
     class: AppBundle\Services\ResponseService\Category

@@ -46,9 +46,7 @@ class CategoryController extends FOSRestController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $cm = $this->get('manager.category');
-
             $cm->createNewCategory($formData['name'], $formData['parent'], $formData['langCode']);
-
             return $this->get('response.category')->byCountry($formData['langCode'], 0);
         }
 
@@ -72,9 +70,7 @@ class CategoryController extends FOSRestController
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $cm = $this->get('manager.category');
-
             $cm->updateCategory($categoryId, $formData['name'], $formData['langCode']);
-
             return $this->get('response.category')->byCountry($formData['langCode'], 0);
         }
 

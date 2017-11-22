@@ -3,12 +3,11 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AppBundle\Entity\ProductPropertyValue;
 
-class ProductPropertyType extends AbstractType
+class ProductPropertyLanguageType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -20,7 +19,7 @@ class ProductPropertyType extends AbstractType
             ->add('name')
             ->add('values', CollectionType::class, [
                 // each entry in the array will be an "email" field
-                'entry_type'   => ProductPropertyValueType::class,
+                'entry_type' => ProductPropertyValueType::class,
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_add' => true,
@@ -30,7 +29,7 @@ class ProductPropertyType extends AbstractType
                 // these options are passed to each "email" type
             ]);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -38,7 +37,7 @@ class ProductPropertyType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => 'AppBundle\Entity\ProductProperty'
+            // 'data_class' => 'AppBundle\Entity\ProductPropertyLanguage',
         ));
     }
 
@@ -49,6 +48,5 @@ class ProductPropertyType extends AbstractType
     {
         return 'appbundle_productproperty';
     }
-
 
 }

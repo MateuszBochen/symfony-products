@@ -2,13 +2,13 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * ProductProperty
  *
- * @ORM\Table(name="product_properties", uniqueConstraints={@ORM\UniqueConstraint(name="languageKey", columns={"product_id", "langCode", "name"})})
+ * @ORM\Table(name="product_properties")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductPropertyRepository")
  */
 class ProductProperty
@@ -18,31 +18,29 @@ class ProductProperty
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO") 
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="langCode", type="string", length=4)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="mainName", type="string", length=255)
      */
-    private $langCode;
+    private $mainName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $name;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="languages")
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="properties")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $product;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ProductPropertyLanguage", mappedBy="property", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $languages;
+    // private $language;
 
     /**
      * @ORM\OneToMany(targetEntity="ProductPropertyValue", mappedBy="property", cascade={"persist"}, orphanRemoval=true)
@@ -51,19 +49,35 @@ class ProductProperty
 
     public function __construct()
     {
+        $this->languages = new ArrayCollection();
         $this->values = new ArrayCollection();
     }
 
+    /*public function getLanguageById(int $id)
+    {
+    $criteria = Criteria::create();
+    $criteria->where(Criteria::expr()->eq('id', $id));
+    $this->language = $this->languages->matching($criteria);
+    if (isset($this->language[0])) {
+    $this->language = $this->language[0];
+    return $this->language;
+    }
+    }*/
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function addValue(ProductPropertyValue $ProductPropertyValue)
-    {   
+    {
         $ProductPropertyValue->setProperty($this);
         $this->values->add($ProductPropertyValue);
 
         return $this;
     }
-    
-    public function removeValues(ProductPropertyValue $ProductPropertyValue)
+
+    public function removeValue(ProductPropertyValue $ProductPropertyValue)
     {
         $this->values->removeElement($ProductPropertyValue);
     }
@@ -73,71 +87,13 @@ class ProductProperty
         return $this->values;
     }
 
-    public function setValues($values) {
+    public function setValues($values)
+    {
         foreach ($values as $value) {
             $value->setProperty($this);
-            $this->values->add($value);            
+            $this->values->add($value);
         }
     }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set langCode
-     *
-     * @param string $langCode
-     *
-     * @return ProductProperty
-     */
-    public function setLangCode($langCode)
-    {
-        $this->langCode = $langCode;
-
-        return $this;
-    }
-
-    /**
-     * Get langCode
-     *
-     * @return string
-     */
-    public function getLangCode()
-    {
-        return $this->langCode;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return ProductProperty
-     */
-    public function setName(string $name)
-    {
-        $name = ucfirst(strtolower($name));
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }    
 
     public function setProduct(Product $product)
     {
@@ -149,5 +105,30 @@ class ProductProperty
     public function getProduct()
     {
         return $this->product;
+    }
+
+    public function addLanguage(ProductPropertyLanguage $productPropertyLanguage)
+    {
+        $productPropertyLanguage->setProperty($this);
+        $this->languages->add($productPropertyLanguage);
+
+        return $this;
+    }
+
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    public function setMainName(string $mainName)
+    {
+        $this->mainName = $mainName;
+
+        return $this;
+    }
+
+    public function getMainName()
+    {
+        return $this->mainName = $mainName;
     }
 }

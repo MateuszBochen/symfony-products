@@ -4,8 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
 use AppBundle\Form\ProductLanguageType;
-use AppBundle\Form\ProductPropertyType;
-use AppBundle\Form\ProductPropertyValueType;
+use AppBundle\Form\ProductPropertyLanguageType;
 use AppBundle\Form\ProductType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -113,7 +112,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/language/{productId}/{langCode}", name="product_add_language")
      * @Method("PUT")
-     * @Rest\View(statusCode=201)
+     * @Rest\View(statusCode=202)
      */
     public function addLanguageAction(Request $request, int $productId, string $langCode)
     {
@@ -154,14 +153,49 @@ class ProductController extends FOSRestController
      */
     public function addPropertyAction(Request $request, int $productId)
     {
-        $prop = new \AppBundle\Entity\ProductProperty();
+        //$prop = new \AppBundle\Entity\ProductPropertyLanguage();
         $data = json_decode($request->getContent(), true);
-        $form = $this->createForm(ProductPropertyType::class, $prop);
+
+        //print_r($data);exit;
+
+        $form = $this->createForm(ProductPropertyLanguageType::class);
         $form->submit($data);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $pm = $this->get('manager.product');
             $product = $pm->findOneBy(['id' => $productId]);
-            $pm->addProperty($prop);
+
+            $formData = $form->getData();
+
+            $pm->addProperty($formData);
+            $pm->save();
+            return $this->get('response.product')->fullProductByProduct($product);
+        }
+
+        return (new \AppBundle\Helpers\FormException(406, $form))->response();
+    }
+
+    /**
+     * Update property language to Product
+     *
+     * @Route("/{productId}/property/language/{languageId}", name="product_update_language_property")
+     * @Method("PATCH")
+     * @Rest\View(statusCode=202)
+     */
+    public function patchPropertyLanguageAction(Request $request, int $productId, int $languageId)
+    {
+        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(ProductPropertyLanguageType::class);
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $pm = $this->get('manager.product');
+            $product = $pm->findOneBy(['id' => $productId]);
+            $ppm = $pm->getProductPropertyManager();
+            $ppl = $ppm->getLanguageById($languageId);
+            $ppl->setName($formData['name']);
+            //$pm->addProperty($formData);
             $pm->save();
             return $this->get('response.product')->fullProductByProduct($product);
         }
@@ -172,57 +206,56 @@ class ProductController extends FOSRestController
     /**
      * Add property to Product
      *
-     * @Route("/{productId}/property/value/{propertyValueId}", name="product_delete_property_value")
-     * @Method("DELETE")
-     * @Rest\View(statusCode=202)
-     */
-    public function deletePropertyValue(Request $request, int $productId, int $propertyValueId)
-    {
-        $pm = $this->get('manager.product');
-        $pm->removePropertyValue($propertyValueId);
-        $pm = $this->get('manager.product');
-        return $this->get('response.product')->fullProduct($productId);
-    }
-
-    /**
-     * Add value to property
-     *
-     * @Route("/{productId}/property/{propertyId}/value", name="product_add_property_value")
+     * @Route("/{productId}/property/{propertyId}/language", name="product_add_language_property")
      * @Method("POST")
      * @Rest\View(statusCode=201)
      */
-    public function addValueToPropertyAction(Request $request, int $productId, int $propertyId)
+    public function postPropertyLanguageAction(Request $request, int $productId, int $propertyId)
     {
-        $propValue = new \AppBundle\Entity\ProductPropertyValue();
         $data = json_decode($request->getContent(), true);
-        $form = $this->createForm(ProductPropertyValueType::class, $propValue);
+        $form = $this->createForm(ProductPropertyLanguageType::class);
         $form->submit($data);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
             $pm = $this->get('manager.product');
-            $pm->addPropertyValue($propValue, $propertyId);
-            return $this->get('response.product')->fullProduct($productId);
+            $product = $pm->findOneBy(['id' => $productId]);
+            $ppm = $pm->getProductPropertyManager();
+            $productProperty = $ppm->getPropertyById($propertyId);
+
+            $ppl = new \AppBundle\Entity\ProductPropertyLanguage();
+            $ppl->setName($formData['name']);
+            $ppl->setLangCode($formData['langCode']);
+
+            $productProperty->addLanguage($ppl);
+
+            //$pm->addProperty($formData);
+            $pm->save();
+            return $this->get('response.product')->fullProductByProduct($product);
         }
+
         return (new \AppBundle\Helpers\FormException(406, $form))->response();
     }
 
     /**
-     * Add value to property
+     * Update property value language
      *
-     * @Route("/{productId}/property/{propertyId}", name="product_update_property")
+     * @Route("/{productId}/property/{propertyId}/value/{propertyValueId}/language/{langCode}", name="product_update_language_property")
      * @Method("PATCH")
      * @Rest\View(statusCode=202)
      */
-    public function updatePropertyAction(Request $request, int $productId, int $propertyId)
+    public function patchPropertyValueLanguageAction(Request $request, int $productId, int $propertyId, int $propertyValueId, string $langCode)
     {
         $data = json_decode($request->getContent(), true);
-        $pm = $this->get('manager.product');
-        $product = $pm->findOneBy(['id' => $productId]);
-        $property = $product->getPropertyById($propertyId);
+        $form = $this->createForm(ProductPropertyLanguageType::class);
+        $form->submit($data);
 
-        $form = $this->createForm(ProductPropertyType::class, $property, ['method' => $request->getMethod()]);
-        $form->submit($data, false);
         if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
             $pm = $this->get('manager.product');
+            $product = $pm->findOneBy(['id' => $productId]);
+            $ppm = $pm->getProductPropertyManager();
+            $ppm->updatePropertyValueLanguage($propertyValueId, $formData);
             $pm->save();
             return $this->get('response.product')->fullProductByProduct($product);
         }
@@ -230,7 +263,45 @@ class ProductController extends FOSRestController
     }
 
     /**
-     * Add value to property
+     * Update property value language
+     *
+     * @Route("/{productId}/property/{propertyId}/value", name="product_new_property_value")
+     * @Method("POST")
+     * @Rest\View(statusCode=201)
+     */
+    public function postPropertyValueAction(Request $request, int $productId, int $propertyId)
+    {
+        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(ProductPropertyLanguageType::class);
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $pm = $this->get('manager.product');
+            $ppm = $pm->getProductPropertyManager();
+            $ppm->addNewPropertyValue($propertyId, $formData);
+            $ppm->save();
+            return $this->get('response.product')->fullProduct($productId);
+        }
+    }
+
+    /**
+     * Delete property value
+     *
+     * @Route("/{productId}/property/{propertyId}/value/{propertyValueId}", name="product_delete_property_value")
+     * @Method("DELETE")
+     * @Rest\View(statusCode=202)
+     */
+    public function deletePropertyValue(Request $request, int $productId, int $propertyValueId)
+    {
+        $pm = $this->get('manager.product');
+        $ppm = $pm->getProductPropertyManager();
+        $ppm->deletePropertyValue($propertyValueId);
+        return $this->get('response.product')->fullProduct($productId);
+    }
+
+    /**
+     * Delete property
      *
      * @Route("/{productId}/property/{propertyId}", name="product_delete_property")
      * @Method("DELETE")
@@ -238,13 +309,10 @@ class ProductController extends FOSRestController
      */
     public function deletePropertyAction(Request $request, int $productId, int $propertyId)
     {
-        $data = json_decode($request->getContent(), true);
         $pm = $this->get('manager.product');
-        $product = $pm->findOneBy(['id' => $productId]);
-        $property = $product->getPropertyById($propertyId);
-        $pm->removeProperty($property);
-        $pm->save();
-        return $this->get('response.product')->fullProductByProduct($product);
+        $ppm = $pm->getProductPropertyManager();
+        $ppm->deleteProperty($propertyId);
+        return $this->get('response.product')->fullProduct($productId);
     }
 
     /**

@@ -7,36 +7,33 @@ use AppBundle\Entity\Product;
 use AppBundle\Entity\ProductFile;
 use AppBundle\Entity\ProductImage;
 use AppBundle\Entity\ProductLanguage;
-use AppBundle\Entity\ProductProperty;
-use AppBundle\Entity\ProductPropertyValue;
 use AppBundle\Manager\ProductFileManager;
 use AppBundle\Manager\ProductImageManager;
-use AppBundle\Repository\ProductPropertyRepository;
-use AppBundle\Repository\ProductPropertyValueRepository;
+use AppBundle\Manager\ProductPropertyManager;
 use AppBundle\Repository\ProductRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductManager extends BaseManager
 {
-    private $productPropertyValueRepository;
-    private $productPropertyRepository;
     private $productImageManager;
+    private $productPropertyManager;
+    private $productFileManager;
 
     public function __construct(
         ProductRepository $productRepository,
         ValidatorInterface $validator,
-        ProductPropertyRepository $productPropertyRepository,
-        ProductPropertyValueRepository $productPropertyValueRepository,
         ProductImageManager $productImageManager,
-        ProductFileManager $productFileManager
+        ProductFileManager $productFileManager,
+        ProductPropertyManager $productPropertyManager
 
     ) {
         $this->repository = $productRepository;
         $this->validator = $validator;
-        $this->productPropertyValueRepository = $productPropertyValueRepository;
-        $this->productPropertyRepository = $productPropertyRepository;
+        // $this->productPropertyValueRepository = $productPropertyValueRepository;
+        // $this->productPropertyRepository = $productPropertyRepository;
         $this->productImageManager = $productImageManager;
         $this->productFileManager = $productFileManager;
+        $this->productPropertyManager = $productPropertyManager;
     }
 
     public function getNewProduct(): Product
@@ -70,32 +67,14 @@ class ProductManager extends BaseManager
         $this->currentEntity->removeLanguage($productLanguage);
     }
 
-    public function addProperty(ProductProperty $property)
+    public function addProperty($formData)
     {
-        $errors = $this->validator->validate($property);
-
-        if ($errors->count()) {
-            throw new ManagerValidationException($errors);
-        }
-
-        $this->currentEntity->addProperty($property);
+        $this->productPropertyManager->addProperty($this->currentEntity, $formData);
     }
 
-    public function removeProperty(ProductProperty $property)
+    public function getProductPropertyManager()
     {
-        $this->currentEntity->removeProperty($property);
-    }
-
-    public function removePropertyValue(int $propertyValueId)
-    {
-        $this->productPropertyValueRepository->deleteById($propertyValueId);
-    }
-
-    public function addPropertyValue(ProductPropertyValue $productPropertyValue, int $propertyId)
-    {
-        $property = $this->productPropertyRepository->findOneBy(['id' => $propertyId]);
-        $property->addValue($productPropertyValue);
-        $this->productPropertyRepository->update($property);
+        return $this->productPropertyManager; // ->getLanguageById($productPropertyLanguageId);
     }
 
     public function addCategory(Category $category)

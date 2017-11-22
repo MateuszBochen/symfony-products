@@ -20,6 +20,5 @@ class ProductPropertyValueRepository extends \Doctrine\ORM\EntityRepository
 
         $qb->getQuery()
             ->execute();
-        //$qb->execute();
     }
 }

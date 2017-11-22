@@ -121,8 +121,17 @@ class Product
 
     private function prepareFullProduct(EntityProduct $product)
     {
+        $properties = $product->getProperties();
+
+        /*$languagesProps = [];
+
+        foreach ($properties as $property) {
+        $property->getLanguages();
+        $languagesProps[] = $property; // $property->getLanguages();
+        }*/
+
         $product->getAlllanguages();
-        $product->getAllProperties();
+        $product->setAllProperties($properties);
         $product->getMainImage();
 
         return $product;
