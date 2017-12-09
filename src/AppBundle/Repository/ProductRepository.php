@@ -14,6 +14,8 @@ use Doctrine\ORM\Query\Expr;
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
     private $total;
+    private $oppositeStorage = 0;
+    private $filters = [];
 
     public function save(Product $product)
     {
@@ -24,6 +26,18 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function countAllProducts()
     {
         return $this->total;
+    }
+
+    /*public function setOppositeStorage(int $storageId)
+    {
+    $this->oppositeStorage = $storageId;
+
+    return $this;
+    }*/
+
+    public function addFilter($name, $value)
+    {
+        $this->filters[$name] = $value;
     }
 
     /*public function findOneByCountryCode(int $productId, string $countryCode)
@@ -60,20 +74,15 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->flush();
     }
 
-    public function search(string $langCode, string $word, int $limit, int $offset, $orderBy, $orderDir)
+    public function search(string $langCode, int $limit, int $offset, $orderBy, $orderDir)
     {
         $q = $this->createQueryBuilder('p')
             ->leftJoin('p.languages', 'pl', Expr\Join::WITH, 'pl.langCode = :langCode')
             ->setParameter('langCode', $langCode);
 
-        if ($word !== '') {
-            $q->where('pl.name LIKE :word')
-                ->orWhere('p.sku LIKE :word')
-                ->orWhere('p.ean LIKE :word')
-                ->setParameter('word', '%' . $word . '%');
-        }
+        $this->filters($q);
 
-        $q->getQuery(); //->getResult();
+        $query = $q->getQuery()->getResult();
 
         $this->total = $q->select('COUNT(p.id)')
             ->getQuery()
@@ -84,6 +93,46 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->setFirstResult($offset)
             ->orderBy($orderBy, $orderDir)
             ->getQuery()->getResult();
+    }
 
+    private function filters($q)
+    {
+        foreach ($this->filters as $key => $value) {
+            $methidName = 'add' . ucfirst($key) . 'Filter';
+            if (!method_exists($this, $methidName)) {
+                continue;
+            }
+            call_user_func([$this, $methidName], $q, $value);
+        }
+    }
+
+    private function addWordFilter($q, string $word)
+    {
+        $q->andWhere('pl.name LIKE :word')
+            ->orWhere('p.sku LIKE :word')
+            ->orWhere('p.ean LIKE :word')
+            ->setParameter('word', '%' . $word . '%');
+    }
+
+    private function addOppositeStorageFilter($q, int $storageId)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $storages = $qb->select('sq')
+            ->from('AppBundle\Entity\StorageQuantity', 'sq')
+            ->andWhere($qb->expr()->eq('sq.id', $storageId))
+            ->getQuery();
+        $q->andWhere($q->expr()->notIn('p.id', $storages->getDQL()));
+    }
+
+    private function addStorageFilter($q, int $storageId)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $storages = $qb->select('sq')
+            ->from('AppBundle\Entity\StorageQuantity', 'sq')
+            ->andWhere($qb->expr()->eq('sq.id', $storageId))
+            ->getQuery();
+        $q->andWhere($q->expr()->in('p.id', $storages->getDQL()));
     }
 }

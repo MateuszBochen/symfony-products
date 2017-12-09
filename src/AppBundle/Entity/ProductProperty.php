@@ -69,10 +69,17 @@ class ProductProperty
         return $this->id;
     }
 
-    public function addValue(ProductPropertyValue $ProductPropertyValue)
+    public function addValue(ProductPropertyValue $productPropertyValue)
     {
-        $ProductPropertyValue->setProperty($this);
-        $this->values->add($ProductPropertyValue);
+        $productPropertyValue->setProperty($this);
+        $this->values->add($productPropertyValue);
+
+        return $this;
+    }
+
+    public function serValue(ProductPropertyValue $productPropertyValue)
+    {
+        $this->addValue($productPropertyValue);
 
         return $this;
     }

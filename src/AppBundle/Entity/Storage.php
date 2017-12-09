@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Storage
@@ -76,6 +78,30 @@ class Storage
      * @ORM\Column(name="lng", type="decimal", precision=18, scale=15, nullable=true)
      */
     private $lng;
+
+    /**
+     * @JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="StorageQuantity", mappedBy="storage", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $storageQuantity;
+
+    public function __construct()
+    {
+        $this->storageQuantity = new ArrayCollection();
+    }
+
+    public function addStorageQuantity(StorageQuantity $storageQuantity)
+    {
+        $storageQuantity->setStorage($this);
+        $this->storageQuantity->add($storageQuantity);
+
+        return $this;
+    }
+
+    public function getStorageQuantity()
+    {
+        return $this->storageQuantity;
+    }
 
     /**
      * Get id

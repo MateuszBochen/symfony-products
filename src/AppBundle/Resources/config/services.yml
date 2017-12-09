@@ -132,6 +132,12 @@ services:
 
   validator.sku:
     class: AppBundle\Validator\Constraints\SKU
-    arguments: ["@repository.product"]
+    arguments: ["@repository.product", "@repository.product.property.value"]
     tags:
       - { name: validator.constraint_validator, alias: sku }
+
+  validator.property.sku:
+    class: AppBundle\Validator\Constraints\PropertySKU
+    arguments: ["@repository.product", "@repository.product.property.value"]
+    tags:
+      - { name: validator.constraint_validator, alias: property.sku }

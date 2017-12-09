@@ -162,12 +162,32 @@ class Product
     private $categoriesNames;
     private $category;
 
+    /**
+     * @JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="StorageQuantity", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $storageQuantity;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->properties = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->storageQuantity = new ArrayCollection();
+    }
+
+    public function addStorageQuantity(StorageQuantity $storageQuantity)
+    {
+        $storageQuantity->setProduct($this);
+        $this->storageQuantity->add($storageQuantity);
+
+        return $this;
+    }
+
+    public function getStorageQuantity()
+    {
+        return $this->storageQuantity;
     }
 
     /**

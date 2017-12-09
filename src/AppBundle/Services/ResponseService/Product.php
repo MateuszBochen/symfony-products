@@ -27,7 +27,7 @@ class Product
         $this->productImageRepository = $productImageRepository;
     }
 
-    public function byCountry(string $countryCode, $word, $page, $orderBy, $orderDir): array
+    public function byCountry(string $countryCode, $page, $orderBy, $orderDir, $filters): array
     {
         if (!isset(self::ORDER_COLUMNS[$orderBy])) {
             return [];
@@ -40,7 +40,10 @@ class Product
 
         $orderColumn = self::ORDER_COLUMNS[$orderBy];
 
-        $products = $this->productRepository->search($countryCode, $word, $this->perPage, $this->perPage * $page, $orderColumn, $orderDir);
+        //$word = (isset($filters['word']) ? $filters['word'] : '');
+        $this->setFilters($filters);
+
+        $products = $this->productRepository->search($countryCode, $this->perPage, $this->perPage * $page, $orderColumn, $orderDir);
 
         foreach ($products as $product) {
             $product->getLanguage($countryCode);
@@ -54,6 +57,13 @@ class Product
             'products' => $products,
             'pages' => ceil($count / $this->perPage),
         ];
+    }
+
+    public function setFilters(array $filters)
+    {
+        foreach ($filters as $filterName => $value) {
+            $this->productRepository->addFilter($filterName, $value);
+        }
     }
 
     /*public function search(string $countryCode, $word, $page, $orderBy, $orderDir)

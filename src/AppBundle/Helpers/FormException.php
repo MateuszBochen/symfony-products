@@ -7,25 +7,25 @@ use Symfony\Component\HttpFoundation\Response;
 class FormException
 {
 
-	private $response;
+    private $response;
 
-	public function __construct($status, $form)
-	{
-		$this->response = new Response();
-		$this->response->headers->set('Content-Type', 'application/json');
-		$this->response->setStatusCode($status);
+    public function __construct($status, $form)
+    {
+        $this->response = new Response();
+        $this->response->headers->set('Content-Type', 'application/json');
+        $this->response->setStatusCode($status);
 
-		$json = $this->getFormErrors($form);
+        $json = $this->getFormErrors($form);
 
-		$this->response->setContent(json_encode($json));
-	}
+        $this->response->setContent(json_encode($json));
+    }
 
-	public function response() 
-	{
-		return $this->response;
-	}
+    public function response()
+    {
+        return $this->response;
+    }
 
-	protected function getFormErrors(\Symfony\Component\Form\Form $form)
+    protected function getFormErrors(\Symfony\Component\Form\Form $form)
     {
         $errors = array();
 
@@ -46,6 +46,5 @@ class FormException
         $srd->errors = $errors;
         return $srd;
     }
-
 
 }

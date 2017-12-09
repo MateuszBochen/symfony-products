@@ -25,9 +25,11 @@ class ProductController extends FOSRestController
      * @Route("/{langCode}/{page}/{limit}/{orderBy}/{orderDir}", name="product_index", requirements={"langCode" = "[a-z]{2}"})
      * @Method("GET")
      */
-    public function indexAction(string $langCode, int $page, int $limit, string $orderBy, string $orderDir)
+    public function indexAction(Request $request, string $langCode, int $page, int $limit, string $orderBy, string $orderDir)
     {
-        return $this->get('response.product')->byCountry($langCode, '', $page, $orderBy, $orderDir);
+        $filters = $request->query->all();
+
+        return $this->get('response.product')->byCountry($langCode, $page, $orderBy, $orderDir, $filters);
     }
 
     /**
@@ -240,7 +242,7 @@ class ProductController extends FOSRestController
     /**
      * Update property value language
      *
-     * @Route("/{productId}/property/{propertyId}/value/{propertyValueId}/language/{langCode}", name="product_update_language_property")
+     * @Route("/{productId}/property/{propertyId}/value/{propertyValueId}/language/{langCode}", name="product_update_language_property_value")
      * @Method("PATCH")
      * @Rest\View(statusCode=202)
      */
