@@ -44,6 +44,11 @@ class ProductManager extends BaseManager
         return $this->currentEntity;
     }
 
+    public function getProductBy(array $conditions): Product
+    {
+        return $this->findOneBy($conditions);
+    }
+
     public function findOneBy(array $conditions): Product
     {
         $this->currentEntity = $this->repository->findOneBy($conditions);

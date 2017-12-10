@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StorageQuantity
  *
- * @ORM\Table(name="storage_quantity")
+ * @ORM\Table(name="storage_quantity", uniqueConstraints={@ORM\UniqueConstraint(name="product", columns={"storage_id", "product_id", "propertyId", "propertyValueId"})}))
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StorageQuantityRepository")
  */
 class StorageQuantity

@@ -117,10 +117,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     private function addOppositeStorageFilter($q, int $storageId)
     {
         $qb = $this->_em->createQueryBuilder();
-
-        $storages = $qb->select('sq')
+        $storages = $qb->select('IDENTITY(sq.product)')
             ->from('AppBundle\Entity\StorageQuantity', 'sq')
-            ->andWhere($qb->expr()->eq('sq.id', $storageId))
+            ->andWhere($qb->expr()->eq('sq.storage', $storageId))
             ->getQuery();
         $q->andWhere($q->expr()->notIn('p.id', $storages->getDQL()));
     }
@@ -129,9 +128,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->_em->createQueryBuilder();
 
-        $storages = $qb->select('sq')
+        $storages = $qb->select('IDENTITY(sq.product)')
             ->from('AppBundle\Entity\StorageQuantity', 'sq')
-            ->andWhere($qb->expr()->eq('sq.id', $storageId))
+            ->andWhere($qb->expr()->eq('sq.storage', $storageId))
             ->getQuery();
         $q->andWhere($q->expr()->in('p.id', $storages->getDQL()));
     }
