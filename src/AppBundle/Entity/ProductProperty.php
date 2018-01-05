@@ -30,6 +30,13 @@ class ProductProperty
     private $mainName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="isStorageProperty", type="boolean")
+     */
+    private $isStorageProperty;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="properties")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -51,7 +58,21 @@ class ProductProperty
     {
         $this->languages = new ArrayCollection();
         $this->values = new ArrayCollection();
+        // $this->ProductStorageGroup = new ArrayCollection();
     }
+
+    /*public function addProductStorageGroup(ProductStorageGroup $ProductStorageGroup)
+    {
+    $ProductStorageGroup->setProductProperty($this);
+    $this->ProductStorageGroup->add($ProductStorageGroup);
+
+    return $this;
+    }
+
+    public function getProductStorageGroup()
+    {
+    return $this->ProductStorageGroup;
+    }*/
 
     /*public function getLanguageById(int $id)
     {
@@ -67,6 +88,13 @@ class ProductProperty
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function addValue(ProductPropertyValue $productPropertyValue)
@@ -137,5 +165,17 @@ class ProductProperty
     public function getMainName()
     {
         return $this->mainName = $mainName;
+    }
+
+    public function setIsStorageProperty($isStorageProperty)
+    {
+        $this->isStorageProperty = $isStorageProperty;
+
+        return $this;
+    }
+
+    public function getIsStorageProperty()
+    {
+        return $this->isStorageProperty;
     }
 }

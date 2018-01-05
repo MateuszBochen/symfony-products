@@ -25,7 +25,7 @@ class ProductLanguage
     /**
      * @var string
      * ISO 639-1:2002, Codes for the representation of names of languages
-     * 
+     *
      * @ORM\Column(name="langCode", type="string", length=4)
      * @Assert\NotBlank()
      */
@@ -61,7 +61,6 @@ class ProductLanguage
      */
     private $fullDescription = '';
 
-
     /**
      * @var string
      *
@@ -84,7 +83,6 @@ class ProductLanguage
      */
     private $unitOfSell;
 
-
     /**
      * @var string
      *
@@ -94,17 +92,17 @@ class ProductLanguage
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="tax", type="decimal", precision=12, scale=2, nullable=true)
      */
     private $tax = 0.00;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(name="price", type="decimal", precision=12, scale=2, nullable=true)
+     *
+     * @ORM\Column(name="price", type="decimal", precision=14, scale=4, nullable=true)
      */
-    private $price = 0.00;
+    private $price = 0.0000;
 
     /**
      * @var string
@@ -418,4 +416,3 @@ class ProductLanguage
         return $this->unitOfSell;
     }
 }
-

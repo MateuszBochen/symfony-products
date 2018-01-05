@@ -1,0 +1,1030 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"co",
+				"collection"
+			],
+			[
+				"pro",
+				"propertyValueId"
+			],
+			[
+				"prop",
+				"properties"
+			],
+			[
+				"produ",
+				"product"
+			],
+			[
+				"or",
+				"orderBy"
+			],
+			[
+				"va",
+				"var_dump"
+			],
+			[
+				"product",
+				"product"
+			],
+			[
+				"con",
+				"conditions"
+			],
+			[
+				"propert",
+				"propertyId"
+			],
+			[
+				"getLangue",
+				"getLanguageById"
+			],
+			[
+				"prod",
+				"productPropertyManager"
+			],
+			[
+				"main",
+				"mainName"
+			],
+			[
+				"pr",
+				"property"
+			],
+			[
+				"Prod",
+				"ProductProperty"
+			],
+			[
+				"storage",
+				"storageId"
+			],
+			[
+				"lang",
+				"langCode"
+			],
+			[
+				"cate",
+				"category"
+			],
+			[
+				"order",
+				"orderBy"
+			],
+			[
+				"ord",
+				"orderDir"
+			],
+			[
+				"return",
+				"returnArray"
+			],
+			[
+				"produc",
+				"product"
+			],
+			[
+				"child",
+				"children"
+			],
+			[
+				"catego",
+				"categoriesNames"
+			],
+			[
+				"Exce",
+				"FormException"
+			],
+			[
+				"categor",
+				"categoryId"
+			],
+			[
+				"ca",
+				"category"
+			],
+			[
+				"file",
+				"fileId"
+			],
+			[
+				"curr",
+				"currentEntity"
+			],
+			[
+				"la",
+				"language"
+			],
+			[
+				"porduc",
+				"productImage"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"size",
+				"sizes"
+			],
+			[
+				"pri",
+				"productImage"
+			],
+			[
+				"a",
+				"a_data"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"files",
+				"filesystem"
+			],
+			[
+				"ori",
+				"originalName"
+			],
+			[
+				"res",
+				"response"
+			],
+			[
+				"errr",
+				"error"
+			],
+			[
+				"add",
+				"addLanguageAction"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"prd",
+				"productId"
+			],
+			[
+				"json",
+				"json_decode"
+			],
+			[
+				"lo",
+				"loggerRepo"
+			],
+			[
+				"th",
+				"this"
+			],
+			[
+				"stor",
+				"storeRepository"
+			],
+			[
+				"shoplo",
+				"shoploOrder"
+			],
+			[
+				"de",
+				"depth"
+			],
+			[
+				"epx",
+				"explode"
+			],
+			[
+				"name",
+				"nameOfFile"
+			],
+			[
+				"cha",
+				"changeHash"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"text-t",
+				"text-transform"
+			],
+			[
+				"number",
+				"numbers"
+			],
+			[
+				"nu",
+				"number"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"js",
+				"json_encode"
+			],
+			[
+				"exp",
+				"explode"
+			],
+			[
+				"strto",
+				"strtolower"
+			],
+			[
+				"arrayK",
+				"array_key_exists"
+			],
+			[
+				"time",
+				"timestamp"
+			],
+			[
+				"cus",
+				"customer"
+			],
+			[
+				"cust",
+				"customer"
+			],
+			[
+				"getPr",
+				"getProduct"
+			],
+			[
+				"mail",
+				"mailgun"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"new",
+				"newImages"
+			],
+			[
+				"stru",
+				"strtoupper"
+			],
+			[
+				"uns",
+				"unset"
+			],
+			[
+				"po",
+				"product"
+			],
+			[
+				"user",
+				"userCanSeeThisProduct"
+			],
+			[
+				"Pro",
+				"product"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/AppBundle/Controller/ProductController.php",
+			"settings":
+			{
+				"buffer_size": 14749,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Manager/ProductPropertyManager.php",
+			"settings":
+			{
+				"buffer_size": 6497,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Entity/ProductStorageGroup.php",
+			"settings":
+			{
+				"buffer_size": 2957,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Entity/ProductStorageGroupProperty.php",
+			"settings":
+			{
+				"buffer_size": 2120,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Repository/ProductStorageGroupPropertyRepository.php",
+			"settings":
+			{
+				"buffer_size": 942,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Validator/Validators/UniqueProductStorageGroupCombinationValidator.php",
+			"settings":
+			{
+				"buffer_size": 1465,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AppBundle/Resources/config/services.yml",
+			"settings":
+			{
+				"buffer_size": 5412,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 184.0,
+		"last_filter": "Package Control: ins",
+		"selected_items":
+		[
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"phpfmt",
+				"phpfmt: getter and setter (Go)"
+			],
+			[
+				"php",
+				"phpfmt: toggle PSR2"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: inst",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Install Package Control"
+			]
+		],
+		"width": 560.0
+	},
+	"console":
+	{
+		"height": 130.0,
+		"history":
+		[
+			"phpfmt: \"indentation with spaces\"",
+			"\"phpfmt: indentation with spaces\"",
+			"phpfmt: help",
+			"phpfmt: ",
+			"phpfmt: indentation with spaces"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/backen/www/html/smerph-api",
+		"/home/backen/www/html/smerph-api/src",
+		"/home/backen/www/html/smerph-api/src/AppBundle",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Resources",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Resources/config",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Validators",
+		"/home/backen/www/html/smerph-api/web"
+	],
+	"file_history":
+	[
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductStorageGroupRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Resources/config/services.yml",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Validators/SKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductStorageGroupType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/UniqueProductStorageGroupCombination.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/UniqueSKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductStorageGroup.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductProperty.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Validators/UniqueProductStorageGroupCombinationValidator.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductStorageGroupProperty.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/BaseManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/ProductPropertyManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductPropertyType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductPropertyLanguageType.php",
+		"/home/backen/www/html/test.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/UniqueProductStorageGroupCombinationValidator.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/SKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductStorageGroupPropertyType.php",
+		"/home/backen/www/html/smerph-api/.sublime-project",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/Storage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductPropertyValue.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/StorageManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/StorageQuantity.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/Product.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ResponseService/Product.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/UniquePropertySKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Helpers/FormException.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductPropertyValueType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/StorageQuantityController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/PropertyStorageGroup.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/Constraints/PropertySKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/ProductManager.php",
+		"/home/backen/www/html/smerph-api/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php",
+		"/home/backen/www/html/smerph-api/vendor/doctrine/orm/lib/Doctrine/ORM/QueryBuilder.php",
+		"/home/backen/www/html/smerph-api/vendor/doctrine/collections/lib/Doctrine/Common/Collections/ArrayCollection.php",
+		"/home/backen/www/html/smerph-api/vendor/doctrine/collections/lib/Doctrine/Common/Collections/Criteria.php",
+		"/home/backen/Pulpit/kod.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductImage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductFileType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductCategoryType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductFile.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Enums/ImageSizeEnum.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ImageSaver.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Helpers/FilesHelper.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/FileSaver.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductPropertyRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductFileRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ImageSizeRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/ProductImageController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/ProductFileController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/Category.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/CategoryController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/StorageController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductPropertyLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductPropertyValueLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/CategoryManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/CategoryLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/CategoryRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductImageLanguageType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductImageLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ResponseService/Storage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/StorageRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/StorageType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ResponseService/Category.php",
+		"/home/backen/www/html/votum/css/main.css",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductImageType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/ProductImageManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/ProductFileManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductPropertyValueRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductPropertyValueLanguageRepository.php",
+		"/etc/apache2/sites-available/000-default.conf",
+		"/etc/apache2/apache2.conf",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductPropertyLanguageRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/ProductImageRepository.php",
+		"/home/backen/Pulpit/api-import-shoplo.txt",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ImageSize.php",
+		"/home/backen/www/html/smerph-api/composer.json",
+		"/home/backen/www/html/smerph-api/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/File/UploadedFile.php",
+		"/home/backen/www/html/smerph-api/vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/Request.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Helpers/RequestParser.php",
+		"/home/backen/.config/sublime-text-3/Packages/phpfmt/phpfmt.sublime-settings",
+		"/home/backen/.config/sublime-text-3/Packages/User/phpfmt.sublime-settings",
+		"/home/backen/www/html/smerph-api/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php",
+		"/home/backen/www/html/smerph-api/vendor/symfony/symfony/src/Symfony/Component/Form/NativeRequestHandler.php",
+		"/home/backen/www/html/smerph-api/app/config/parameters.yml.dist",
+		"/home/backen/www/html/smerph-api/app/config/parameters.yml",
+		"/home/backen/www/html/smerph-api/src/AppBundle/EventListener/RawRequestTransformerListener.php",
+		"/etc/php/7.0/apache2/php.ini",
+		"/home/backen/www/html/smerph-api/vendor/symfony/symfony/src/Symfony/Component/Filesystem/Filesystem.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Helpers/ImageSaver.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/ProductController.php",
+		"/home/backen/.config/sublime-text-3/Packages/phpfmt/Default.sublime-keymap",
+		"/home/backen/.config/sublime-text-3/Packages/User/Default.sublime-keymap",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/CountryController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Controller/CurrencyController.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ResponseService/Country.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Services/ResponseService/Currency.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/Country.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Manager/CountryManager.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/CountryLanguage.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/CountryRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Repository/CurrencyRepository.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductImageSize.php",
+		"/home/backen/www/html/smerph-api/app/config/config.yml",
+		"/home/backen/Pulpit/waluty.csv",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductLanguageType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Form/ProductType.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Validator/SKU.php",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductProperties.php",
+		"/home/backen/www/js/contact-reactjs/src/containers/Dashboard/index.js",
+		"/home/backen/www/js/contact-reactjs/src/containers/App/index.js",
+		"/home/backen/www/js/contact-reactjs/src/components/WorkPage/index.js",
+		"/home/backen/www/js/contact-reactjs/src/routes.js",
+		"/home/backen/www/html/smerph-api/app/AppKernel.php",
+		"/home/backen/www/html/smerph-api/app/config/routing.yml",
+		"/home/backen/www/html/smerph-api/src/AppBundle/Entity/ProductPropertiesValue.php",
+		"/home/backen/Pulpit/kraje.csv",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AppBundle/Entity/Product.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/Services/GetAllProductsService.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AppBundle/Repository/ShoploIdForProductRepository.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/Services/ImportProductsService.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/Services/ImportStorageService.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AppBundle/Resources/views/Emails/tracking-notification.html.twig",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AppBundle/Repository/LoggerRepository.php",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AdminBundle/Resources/views/ImportStatus/importStatus.html.twig",
+		"/home/backen/www/html/govecs-shwalbe-api-php/src/AdminBundle/Controller/ImportStatusController.php"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+			"/home/backen/www/html/smerph-api/src",
+			"/home/backen/www/html/smerph-api/vendor",
+			"/home/backen/www/html/smerph-api/src/AppBundle",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"PropertyStorageGroup",
+			"product_update_language_property",
+			"includ",
+			"include",
+			"data",
+			"getDa",
+			"data",
+			"form",
+			"allProperties",
+			"product",
+			"ProductPropertyRepository",
+			"productPropertyRepository",
+			"repository.product.property",
+			"        \n",
+			"was not uploaded due to an unknown error",
+			"createRequestFromFactory",
+			"$_POST",
+			"request",
+			"METHOD_PATCH",
+			"max",
+			"ProdictImage",
+			"ProductProperties",
+			"vendo",
+			"vendoe",
+			"brand",
+			"unit",
+			"unitOfSell",
+			"govecs",
+			"echo",
+			"print",
+			"att",
+			"order_number",
+			"separateShopPrefixAndId",
+			"prin",
+			"produkty-powiazane",
+			"lista-wszystkich-produktow",
+			"MissingRequiredParameters",
+			"title",
+			"')            "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"ProductStorageGroup",
+			"ProductPropertyLanguageRepository",
+			"ProductImage",
+			"ProductProperty"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/AppBundle/Controller/ProductController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14749,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11380,
+								11389
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4455.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/AppBundle/Manager/ProductPropertyManager.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6497,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6003,
+								6003
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1935.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/AppBundle/Entity/ProductStorageGroup.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2957,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1553,
+								1564
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 225.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/AppBundle/Entity/ProductStorageGroupProperty.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2120,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1077,
+								1077
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/AppBundle/Repository/ProductStorageGroupPropertyRepository.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 942,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								169,
+								169
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/AppBundle/Validator/Validators/UniqueProductStorageGroupCombinationValidator.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1465,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1446,
+								1446
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/AppBundle/Resources/config/services.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5412,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2023,
+								2052
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 32.0,
+						"translation.y": 630.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": ".sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/www/html/govecs-shwalbe-api-php/sparky.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 971.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"328":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"345":
+				{
+					"group": 0,
+					"index": 6
+				},
+				"351":
+				{
+					"group": 0,
+					"index": 2
+				},
+				"352":
+				{
+					"group": 0,
+					"index": 3
+				},
+				"368":
+				{
+					"group": 0,
+					"index": 5
+				},
+				"376":
+				{
+					"group": 0,
+					"index": 4
+				},
+				"383":
+				{
+					"group": 0,
+					"index": 1
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 341.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

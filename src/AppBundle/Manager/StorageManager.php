@@ -35,8 +35,8 @@ class StorageManager extends BaseManager
         $sq = new StorageQuantity();
         $sq->setProduct($product);
         $sq->setQuantity(0);
-        $sq->setPropertyId(0);
-        $sq->setPropertyValueId(0);
+        /*$sq->setPropertyId(0);
+        $sq->setPropertyValueId(0);*/
         $storage->addStorageQuantity($sq);
     }
 }

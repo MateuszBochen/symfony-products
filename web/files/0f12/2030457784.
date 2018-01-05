@@ -1,0 +1,10 @@
+<?php
+$dupa = 'cipa';
+$b = function ($a) use ($dupa) {
+    echo $dupa;
+    $dupa = 'nowa dupa';
+};
+
+$b();
+
+echo $dupa;

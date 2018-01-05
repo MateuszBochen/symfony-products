@@ -17,6 +17,7 @@ class ProductPropertyLanguageType extends AbstractType
         $builder
             ->add('langCode')
             ->add('name')
+            ->add('isStorageProperty')
             ->add('values', CollectionType::class, [
                 // each entry in the array will be an "email" field
                 'entry_type' => ProductPropertyValueType::class,

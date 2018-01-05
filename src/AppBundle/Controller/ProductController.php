@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Product;
 use AppBundle\Form\ProductLanguageType;
 use AppBundle\Form\ProductPropertyLanguageType;
+use AppBundle\Form\ProductPropertyType;
+use AppBundle\Form\ProductStorageGroupType;
 use AppBundle\Form\ProductType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -303,6 +305,30 @@ class ProductController extends FOSRestController
     }
 
     /**
+     * Toggle product property is store property
+     *
+     * @Route("/{productId}/property/{propertyId}/toogle-storage-property", name="product_toggle_property_is_store_property")
+     * @Method("PATCH")
+     * @Rest\View(statusCode=202)
+     */
+    public function toggleProductPropertyIsStorePropertyAction(Request $request, int $productId, int $propertyId)
+    {
+        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(ProductPropertyType::class);
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $pm = $this->get('manager.product');
+            $ppm = $pm->getProductPropertyManager();
+            $ppm->toggleProductPropertyIsStoreProperty($productId, $propertyId, $formData);
+            return $this->get('response.product')->fullProduct($productId);
+        }
+
+        return (new \AppBundle\Helpers\FormException(406, $form))->response();
+    }
+
+    /**
      * Delete property
      *
      * @Route("/{productId}/property/{propertyId}", name="product_delete_property")
@@ -362,6 +388,57 @@ class ProductController extends FOSRestController
         $pm->save();
         return ['OK'];
         //return $this->get('response.product')->byCountry('pl', $page);
+    }
+
+    /**
+     * Create product storage group
+     *
+     * @Route("/storage-group/{productId}", name="product_create_storage_group")
+     * @Method("POST")
+     * @Rest\View(statusCode=201)
+     */
+    public function createProductStorageGroup(Request $request, int $productId)
+    {
+        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(ProductStorageGroupType::class);
+        $form->submit($data);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $pm = $this->get('manager.product');
+            $product = $pm->findOneBy(['id' => $productId]);
+            $product->addProductStorageGroup($formData);
+            $pm->save();
+            return $this->get('response.product')->fullProductByProduct($product);
+        }
+        return (new \AppBundle\Helpers\FormException(406, $form))->response();
+    }
+
+    /**
+     * Update product storage group
+     *
+     * @Route("/storage-group/{productId}/{storageGroupId}", name="patch_create_storage_group")
+     * @Method("PATCH")
+     * @Rest\View(statusCode=201)
+     */
+    public function putProductStorageGroup(Request $request, int $productId, int $storageGroupId)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $pm = $this->get('manager.product');
+        $product = $pm->findOneBy(['id' => $productId]);
+        $storageGroup = $product->getProductStorageGroupById($storageGroupId);
+
+        $form = $this->createForm(ProductStorageGroupType::class, $storageGroup);
+        $form->submit($data);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $pm = $this->get('manager.product');
+            $pm->save();
+            return $this->get('response.product')->fullProductByProduct($product);
+        }
+
+        return (new \AppBundle\Helpers\FormException(406, $form))->response();
     }
 
     /**/

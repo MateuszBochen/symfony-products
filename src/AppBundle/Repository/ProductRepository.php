@@ -80,6 +80,11 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('p.languages', 'pl', Expr\Join::WITH, 'pl.langCode = :langCode')
             ->setParameter('langCode', $langCode);
 
+        // sotorage left join is in storagefilter for correct sum count
+        if (!isset($this->filters['storage'])) {
+            $q->leftJoin('p.storageQuantity', 'ps');
+        }
+
         $this->filters($q);
 
         $query = $q->getQuery()->getResult();
@@ -88,21 +93,64 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $q->select('p')
+        $q->select('p, SUM(ps.quantity) as quantity')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->orderBy($orderBy, $orderDir)
-            ->getQuery()->getResult();
+            ->groupBy('p.id')
+            ->addGroupBy('pl.name')
+            ->orderBy($orderBy, $orderDir);
+
+        $r = $q->getQuery()->getResult();
+        return $this->aggregateToModel($r);
     }
+
+    private function aggregateToModel($array)
+    {
+        $newArray = [];
+
+        foreach ($array as $item) {
+            $model = $item[0];
+            $model->setQuantity($item['quantity'] ? $item['quantity'] : 0);
+            $newArray[] = $model;
+        }
+        return $newArray;
+    }
+
+    /**
+    // per storage
+    SELECT p0_.id, sum(s1_.quantity)
+    FROM product p0_
+    LEFT JOIN product_language p2_ ON p0_.id = p2_.product_id AND (p2_.langCode = 'pl')
+    LEFT JOIN storage_quantity s1_ ON p0_.id = s1_.product_id
+    GROUP BY p0_.id
+
+    SELECT p0_.id AS id_0, SUM(s1_.quantity) AS sclr_14 FROM product p0_
+    LEFT JOIN product_language p2_ ON p0_.id = p2_.product_id AND (p2_.langCode = 'pl')
+    LEFT JOIN storage_quantity s1_ ON p0_.id = s1_.product_id
+    WHERE p0_.id IN (SELECT s3_.product_id AS sclr_15 FROM storage_quantity s3_ WHERE s3_.storage_id = 6)
+    GROUP BY p0_.id, p2_.name
+    ORDER BY p2_.name ASC
+    LIMIT 10 OFFSET 0
+
+    // all storages for product
+    SELECT p0_.id, s1_.product_id, s1_.storage_id, (SELECT SUM(storage_quantity.quantity) FROM storage_quantity WHERE storage_quantity.product_id = p0_.id group by product_id) as qq
+    FROM product p0_
+    LEFT JOIN product_language p2_ ON p0_.id = p2_.product_id AND (p2_.langCode = 'pl')
+    LEFT JOIN storage_quantity s1_ ON p0_.id = s1_.product_id
+    WHERE s1_.storage_id IS NOT null
+    GROUP BY s1_.product_id
+    ORDER BY p2_.name ASC
+    LIMIT 10 OFFSET 0
+     */
 
     private function filters($q)
     {
         foreach ($this->filters as $key => $value) {
-            $methidName = 'add' . ucfirst($key) . 'Filter';
-            if (!method_exists($this, $methidName)) {
+            $methodName = 'add' . ucfirst($key) . 'Filter';
+            if (!method_exists($this, $methodName)) {
                 continue;
             }
-            call_user_func([$this, $methidName], $q, $value);
+            call_user_func([$this, $methodName], $q, $value);
         }
     }
 
@@ -132,6 +180,9 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->from('AppBundle\Entity\StorageQuantity', 'sq')
             ->andWhere($qb->expr()->eq('sq.storage', $storageId))
             ->getQuery();
+
+        $q->leftJoin('p.storageQuantity', 'ps', Expr\Join::WITH, 'ps.storage = :storageId')
+            ->setParameter('storageId', $storageId);
         $q->andWhere($q->expr()->in('p.id', $storages->getDQL()));
     }
 }

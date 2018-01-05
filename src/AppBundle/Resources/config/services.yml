@@ -54,6 +54,16 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:ProductFile]
 
+  repository.product.storage.group:
+    class: AppBundle\Repository\ProductStorageGroupRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductStorageGroup]
+
+  repository.product.storage.group.property:
+    class: AppBundle\Repository\ProductStorageGroupPropertyRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:ProductStorageGroupProperty]
+
   repository.image.size:
     class: AppBundle\Repository\ImageSizeRepository
     factory: ["@doctrine", getRepository]
@@ -78,7 +88,7 @@ services:
   manager.product.property:
     class: AppBundle\Manager\ProductPropertyManager
     share: false
-    arguments: ['@validator', '@repository.product.property', '@repository.product.property.language', '@repository.product.property.value', '@repository.product.property.value.language']
+    arguments: ['@validator', '@repository.product.property', '@repository.product.property.language', '@repository.product.property.value', '@repository.product.property.value.language', '@repository.product.storage.group.property', '@repository.product.storage.group']
 
   manager.product.image:
     class: AppBundle\Manager\ProductImageManager
@@ -131,13 +141,13 @@ services:
     arguments: ['%kernel.root_dir%', '@filesystem', '@router']
 
   validator.sku:
-    class: AppBundle\Validator\Constraints\SKU
-    arguments: ["@repository.product", "@repository.product.property.value"]
+    class: AppBundle\Validator\Validators\SKU
+    arguments: ["@repository.product", '@repository.product.storage.group']
     tags:
       - { name: validator.constraint_validator, alias: sku }
 
-  validator.property.sku:
-    class: AppBundle\Validator\Constraints\PropertySKU
-    arguments: ["@repository.product", "@repository.product.property.value"]
+  validator.unique-product-storage-group-combination:
+    class: AppBundle\Validator\Validators\UniqueProductStorageGroupCombinationValidator
+    arguments: ['@repository.product.storage.group.property']
     tags:
-      - { name: validator.constraint_validator, alias: property.sku }
+      - { name: validator.constraint_validator, alias: unique-product-storage-group-combination }

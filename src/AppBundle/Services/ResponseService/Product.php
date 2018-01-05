@@ -5,6 +5,7 @@ namespace AppBundle\Services\ResponseService;
 use AppBundle\Entity\Product as EntityProduct;
 use AppBundle\Repository\ProductImageRepository;
 use AppBundle\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Product
 {
@@ -12,6 +13,7 @@ class Product
         'sku' => 'p.sku',
         'id' => 'p.id',
         'name' => 'pl.name',
+        'quantity' => 'quantity',
     ];
 
     private $perPage = 10;
@@ -40,7 +42,6 @@ class Product
 
         $orderColumn = self::ORDER_COLUMNS[$orderBy];
 
-        //$word = (isset($filters['word']) ? $filters['word'] : '');
         $this->setFilters($filters);
 
         $products = $this->productRepository->search($countryCode, $this->perPage, $this->perPage * $page, $orderColumn, $orderDir);
@@ -48,6 +49,7 @@ class Product
         foreach ($products as $product) {
             $product->getLanguage($countryCode);
             $product->getMainImage();
+            $product->setProductStorageGroup(new ArrayCollection());
             $product->setCategoriesNames($this->prepareCategories($product, $countryCode));
         }
 

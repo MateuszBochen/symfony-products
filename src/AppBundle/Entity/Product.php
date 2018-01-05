@@ -168,6 +168,15 @@ class Product
      */
     private $storageQuantity;
 
+    /**
+     * JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="ProductStorageGroup", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $productStorageGroup;
+
+    // summ all quantity from all storages or single storage
+    private $quantity = 0;
+
     public function __construct()
     {
         $this->languages = new ArrayCollection();
@@ -175,6 +184,7 @@ class Product
         $this->properties = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->storageQuantity = new ArrayCollection();
+        $this->productStorageGroup = new ArrayCollection();
     }
 
     public function addStorageQuantity(StorageQuantity $storageQuantity)
@@ -188,6 +198,38 @@ class Product
     public function getStorageQuantity()
     {
         return $this->storageQuantity;
+    }
+
+    public function addProductStorageGroup(ProductStorageGroup $productStorageGroup)
+    {
+        $productStorageGroup->setProduct($this);
+        $this->productStorageGroup->add($productStorageGroup);
+
+        return $this;
+    }
+
+    public function getProductStorageGroup()
+    {
+        return $this->productStorageGroup;
+    }
+
+    public function getProductStorageGroupById(int $storageGroupId)
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('id', $storageGroupId));
+        $results = $this->productStorageGroup->matching($criteria);
+        if (isset($results[0])) {
+            return $results[0];
+        }
+
+        return [];
+    }
+
+    public function setProductStorageGroup($productStorageGroup)
+    {
+        $this->productStorageGroup = $productStorageGroup;
+
+        return $this;
     }
 
     /**
@@ -725,5 +767,17 @@ class Product
     {
         $category->removeProduct($this);
         $this->categories->removeElement($category);
+    }
+
+    public function setQuantity(float $quantity)
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
     }
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StorageQuantity
  *
- * @ORM\Table(name="storage_quantity", uniqueConstraints={@ORM\UniqueConstraint(name="product", columns={"storage_id", "product_id", "propertyId", "propertyValueId"})}))
+ * @ORM\Table(name="storage_quantity", uniqueConstraints={@ORM\UniqueConstraint(name="productStorageQuantity", columns={"product_id", "storage_id", "property_storage_group_id"})}))
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StorageQuantityRepository")
  */
 class StorageQuantity
@@ -24,21 +24,7 @@ class StorageQuantity
     /**
      * @var int
      *
-     * @ORM\Column(name="propertyId", type="integer", nullable=true)
-     */
-    private $propertyId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="propertyValueId", type="integer", nullable=true)
-     */
-    private $propertyValueId;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantity", type="integer")
+     * @ORM\Column(name="quantity", type="decimal", precision=12, scale=2,)
      */
     private $quantity;
 
@@ -54,6 +40,12 @@ class StorageQuantity
      */
     private $product;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductStorageGroup", inversedBy="productStorageGroup")
+     * @ORM\JoinColumn(name="property_storage_group_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $productStorageGroup;
+
     public function setStorage(Storage $storage)
     {
         $this->storage = $storage;
@@ -64,6 +56,18 @@ class StorageQuantity
     public function getStorage()
     {
         return $this->storage;
+    }
+
+    public function setProductStorageGroup(ProductStorageGroup $productStorageGroup)
+    {
+        $this->productStorageGroup = $productStorageGroup;
+
+        return $this;
+    }
+
+    public function getProductStorageGroup()
+    {
+        return $this->productStorageGroup;
     }
 
     public function setProduct(Product $product)

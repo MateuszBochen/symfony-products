@@ -3,10 +3,14 @@
 namespace AppBundle\Manager;
 
 use AppBundle\Entity\Product;
+use AppBundle\Entity\ProductProperty;
+use AppBundle\Entity\ProductStorageGroupProperty;
 use AppBundle\Repository\ProductPropertyLanguageRepository;
 use AppBundle\Repository\ProductPropertyRepository;
 use AppBundle\Repository\ProductPropertyValueLanguageRepository;
 use AppBundle\Repository\ProductPropertyValueRepository;
+use AppBundle\Repository\ProductStorageGroupPropertyRepository;
+use AppBundle\Repository\ProductStorageGroupRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use \AppBundle\Entity\ProductPropertyValue;
 
@@ -14,19 +18,26 @@ class ProductPropertyManager extends BaseManager
 {
     private $productPropertyLanguageRepository;
     private $productPropertyValueLanguageRepository;
+    private $productPropertyValueRepository;
+    private $productStorageGroupPropertyRepository;
+    private $productStorageGroupRepository;
 
     public function __construct(
         ValidatorInterface $validator,
         ProductPropertyRepository $productPropertyRepository,
         ProductPropertyLanguageRepository $productPropertyLanguageRepository,
         ProductPropertyValueRepository $productPropertyValueRepository,
-        ProductPropertyValueLanguageRepository $productPropertyValueLanguageRepository
+        ProductPropertyValueLanguageRepository $productPropertyValueLanguageRepository,
+        ProductStorageGroupPropertyRepository $productStorageGroupPropertyRepository,
+        ProductStorageGroupRepository $productStorageGroupRepository
     ) {
         $this->repository = $productPropertyRepository;
         $this->productPropertyLanguageRepository = $productPropertyLanguageRepository;
         $this->validator = $validator;
         $this->productPropertyValueLanguageRepository = $productPropertyValueLanguageRepository;
         $this->productPropertyValueRepository = $productPropertyValueRepository;
+        $this->productStorageGroupPropertyRepository = $productStorageGroupPropertyRepository;
+        $this->productStorageGroupRepository = $productStorageGroupRepository;
     }
 
     public function addProperty(Product $product, array $formData)
@@ -34,9 +45,9 @@ class ProductPropertyManager extends BaseManager
 
         $propertyName = $formData['name'];
         $langCode = $formData['langCode'];
-
-        $property = new \AppBundle\Entity\ProductProperty();
+        $property = new ProductProperty();
         $property->setMainName($propertyName);
+        $property->setIsStorageProperty($formData['isStorageProperty'] ? $formData['isStorageProperty'] : false);
 
         $propertyLanguage = new \AppBundle\Entity\ProductPropertyLanguage();
         $propertyLanguage->setLangCode($langCode);
@@ -88,11 +99,14 @@ class ProductPropertyManager extends BaseManager
 
     public function getLanguageById(int $id)
     {
-        return $this->productPropertyLanguageRepository->findOneBy(['id' => $id]);
+        $this->currentEntity = $this->productPropertyLanguageRepository->findOneBy(['id' => $id]);
+        return $this->currentEntity;
     }
+
     public function getPropertyById(int $id)
     {
-        return $this->repository->findOneBy(['id' => $id]);
+        $this->currentEntity = $this->repository->findOneBy(['id' => $id]);
+        return $this->currentEntity;
     }
 
     public function getPropertyValueLanguageById(int $id)
@@ -122,5 +136,37 @@ class ProductPropertyManager extends BaseManager
         $ppv->addLanguage($ppvl);
 
         return $ppv;
+    }
+
+    public function toggleProductPropertyIsStoreProperty(int $productId, int $propertyId, ProductProperty $formData)
+    {
+        $newStatus = (bool) $formData->getIsStorageProperty();
+
+        // change current proprety store status
+        $this->getPropertyById($propertyId);
+        $this->currentEntity->setIsStorageProperty($newStatus);
+        $this->save();
+
+        // if newStatus is false remove all properties from product storage group property
+        // else add new storge property to all storage grups in this product
+        if ($newStatus === false) {
+            $this->productStorageGroupPropertyRepository->deleteAllByPropertyId($propertyId);
+        } else {
+            $groups = $this->productStorageGroupRepository->findBy(['product' => $productId]);
+            if (!$groups) {
+                return;
+            }
+
+            $property = $this->repository->findOneBy(['id' => $propertyId]);
+
+            foreach ($groups as $productStorageGroup) {
+
+                $productStorageGroupProperty = new ProductStorageGroupProperty();
+                $productStorageGroupProperty->setProductProperty($property);
+
+                $productStorageGroup->addProperty($productStorageGroupProperty);
+                $this->productStorageGroupRepository->update($productStorageGroup);
+            }
+        }
     }
 }

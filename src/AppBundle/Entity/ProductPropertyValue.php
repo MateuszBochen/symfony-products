@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * ProductPropertyValue
@@ -31,6 +32,7 @@ class ProductPropertyValue
     private $mainValue;
 
     /**
+     * @JMS\Exclude()
      * @ORM\ManyToOne(targetEntity="ProductProperty", inversedBy="values")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -46,7 +48,21 @@ class ProductPropertyValue
     public function __construct()
     {
         $this->languages = new ArrayCollection();
+        // $this->ProductStorageGroup = new ArrayCollection();
     }
+
+    /*public function addProductStorageGroup(ProductStorageGroup $ProductStorageGroup)
+    {
+    $ProductStorageGroup->setProductPropertyValue($this);
+    $this->ProductStorageGroup->add($ProductStorageGroup);
+
+    return $this;
+    }
+
+    public function getProductStorageGroup()
+    {
+    return $this->ProductStorageGroup;
+    }*/
 
     public function addLanguage(ProductPropertyValueLanguage $productPropertyValueLanguage)
     {
