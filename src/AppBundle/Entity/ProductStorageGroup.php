@@ -51,10 +51,17 @@ class ProductStorageGroup
      */
     private $storageQuantity;
 
+    /**
+     * JMS\Exclude()
+     * @ORM\OneToMany(targetEntity="ProductStorageGroupPrice", mappedBy="productStorageGroup", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $prices;
+
     public function __construct()
     {
         $this->storageQuantity = new ArrayCollection();
         $this->properties = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     public function addProperty(ProductStorageGroupProperty $productStorageGroupProperty)
@@ -77,9 +84,30 @@ class ProductStorageGroup
             $this->properties->add($property);
         }
 
-        //$this->properties = $properties;
+        return $this;
+    }
+
+    public function setPrices($prices)
+    {
+        foreach ($prices as $price) {
+            $price->setProductStorageGroup($this);
+            $this->prices->add($price);
+        }
 
         return $this;
+    }
+
+    public function addPrice(ProductStorageGroupPrice $productStorageGroupPrice)
+    {
+        $productStorageGroupProperty->setProductStorageGroup($this);
+        $this->prices->add($productStorageGroupPrice);
+
+        return $this;
+    }
+
+    public function getPrices()
+    {
+        return $this->prices;
     }
 
     public function setProduct(Product $product)

@@ -419,7 +419,7 @@ class ProductController extends FOSRestController
      *
      * @Route("/storage-group/{productId}/{storageGroupId}", name="patch_create_storage_group")
      * @Method("PATCH")
-     * @Rest\View(statusCode=201)
+     * @Rest\View(statusCode=202)
      */
     public function putProductStorageGroup(Request $request, int $productId, int $storageGroupId)
     {
@@ -441,6 +441,21 @@ class ProductController extends FOSRestController
         return (new \AppBundle\Helpers\FormException(406, $form))->response();
     }
 
+    /**
+     * Delete product storage group
+     *
+     * @Route("/storage-group/{productId}/{storageGroupId}", name="delete_create_storage_group")
+     * @Method("DELETE")
+     * @Rest\View(statusCode=202)
+     */
+    public function deleteProductStorageGroup(Request $request, int $productId, int $storageGroupId)
+    {
+        $pm = $this->get('manager.product');
+        $product = $pm->findOneBy(['id' => $productId]);
+        $product->removeProductStorageGroupById($storageGroupId);
+        $pm->save();
+        return $this->get('response.product')->fullProductByProduct($product);
+    }
     /**/
 }
 

@@ -222,7 +222,16 @@ class Product
             return $results[0];
         }
 
-        return [];
+        return false;
+    }
+
+    public function removeProductStorageGroupById(int $storageGroupId)
+    {
+        $productStorageGroup = $this->getProductStorageGroupById($storageGroupId);
+
+        if ($productStorageGroup) {
+            $this->productStorageGroup->removeElement($productStorageGroup);
+        }
     }
 
     public function setProductStorageGroup($productStorageGroup)

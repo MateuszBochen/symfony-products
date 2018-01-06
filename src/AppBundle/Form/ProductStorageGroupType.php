@@ -17,13 +17,21 @@ class ProductStorageGroupType extends AbstractType
         $builder
             ->add('sku')
             ->add('properties', CollectionType::class, [
-                // each entry in the array will be an "email" field
                 'entry_type' => ProductStorageGroupPropertyType::class,
                 'by_reference' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'delete_empty' => true,
                 'prototype' => false,
+            ])
+            ->add('prices', CollectionType::class, [
+                'entry_type' => ProductStorageGroupPriceType::class,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'delete_empty' => true,
+                'prototype' => false,
+                'required' => false,
             ]);
     }
 

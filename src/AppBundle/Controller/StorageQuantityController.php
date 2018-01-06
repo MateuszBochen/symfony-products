@@ -20,7 +20,7 @@ class StorageQuantityController extends FOSRestController
     /**
      * Add Product to Storage
      *
-     * @Route("/{storageId}", name="storage_add")
+     * @Route("/{storageId}", name="storage_quantity_add")
      * @Method("POST")
      * @Rest\View(statusCode=201)
      */
