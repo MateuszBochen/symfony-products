@@ -85,6 +85,16 @@ class Storage
      */
     private $storageQuantity;
 
+    /**
+     * postLoad
+     */
+    private $hasEmptyProduct = false;
+
+    /**
+     * postLoad
+     */
+    private $productsQuantity = 0;
+
     public function __construct()
     {
         $this->storageQuantity = new ArrayCollection();
@@ -102,6 +112,55 @@ class Storage
     {
         return $this->storageQuantity;
     }
+
+    public function setProductsQuantity($quantity)
+    {
+        $this->productsQuantity = $quantity;
+
+        return $this;
+    }
+
+    public function setHasEmptyProduct($hasEmptyProduct)
+    {
+        $this->hasEmptyProduct = $hasEmptyProduct;
+
+        return $this;
+    }
+
+    public function getHasEmptyProduct()
+    {
+        return $this->hasEmptyProduct;
+    }
+
+    /*/**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("quantity")
+
+    public function getStorageQuantityAsInt()
+    {
+    $quantity = 0;
+    foreach ($this->storageQuantity as $quantityEntity) {
+    $quantity += $quantityEntity->getQuantity();
+    }
+    return $quantity;
+    }
+
+     *
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("hasEmptyProduct")
+
+    public function hasEmptyProduct()
+    {
+    $criteria = Criteria::create();
+    $criteria->where(Criteria::expr()->eq('quantity', 0));
+    $results = $this->storageQuantity->matching($criteria);
+
+    if ($results) {
+    return true;
+    }
+
+    return false;
+    }*/
 
     /**
      * Get id

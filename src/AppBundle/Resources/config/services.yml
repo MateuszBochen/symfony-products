@@ -74,10 +74,20 @@ services:
     factory: ["@doctrine", getRepository]
     arguments: [AppBundle:Storage]
 
+  repository.storage.quantity:
+    class: AppBundle\Repository\StorageQuantityRepository
+    factory: ["@doctrine", getRepository]
+    arguments: [AppBundle:StorageQuantity]
+
   manager.storage:
     class: AppBundle\Manager\StorageManager
     share: false
     arguments: ['@repository.storage', '@validator']
+
+  manager.storage.quantity:
+    class: AppBundle\Manager\StorageQuantityManager
+    share: false
+    arguments: ['@repository.storage.quantity', '@validator']
 
 
   manager.product:
@@ -151,3 +161,9 @@ services:
     arguments: ['@repository.product.storage.group.property']
     tags:
       - { name: validator.constraint_validator, alias: unique-product-storage-group-combination }
+
+  entity.listener.storage:
+    class: AppBundle\EventListener\Entity\Storage
+    tags:
+      - { name: doctrine.event_listener, event: postLoad }
+

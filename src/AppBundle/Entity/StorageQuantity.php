@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * StorageQuantity
@@ -25,18 +26,21 @@ class StorageQuantity
      * @var int
      *
      * @ORM\Column(name="quantity", type="decimal", precision=12, scale=2,)
+     * @Assert\NotBlank()
      */
     private $quantity;
 
     /**
      * @ORM\ManyToOne(targetEntity="Storage", inversedBy="storageQuantity")
      * @ORM\JoinColumn(name="storage_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotBlank()
      */
     private $storage;
 
     /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="storageQuantity")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\NotBlank()
      */
     private $product;
 
@@ -90,6 +94,13 @@ class StorageQuantity
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

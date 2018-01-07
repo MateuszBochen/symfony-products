@@ -40,7 +40,7 @@ class StorageController extends FOSRestController
     /**
      * Patch Storage
      *
-     * @Route("/{storageId}", name="storage_patch")
+     * @Route("/{storageId}", name="storage_patch", requirements={"storageId" = "[1-9]"}))
      * @Method("PATCH")
      * @Rest\View(statusCode=202)
      */

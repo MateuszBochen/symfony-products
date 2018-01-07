@@ -200,6 +200,17 @@ class Product
         return $this->storageQuantity;
     }
 
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("onlyMainStorageQuantity")
+     */
+    public function getOnlyMainStorageQuantity()
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('productStorageGroup', null));
+        return $this->storageQuantity->matching($criteria);
+    }
+
     public function addProductStorageGroup(ProductStorageGroup $productStorageGroup)
     {
         $productStorageGroup->setProduct($this);

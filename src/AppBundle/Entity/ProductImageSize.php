@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * ProductImageSize
@@ -24,6 +25,7 @@ class ProductImageSize
     /**
      * @var string
      *
+     * @JMS\Exclude()
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
